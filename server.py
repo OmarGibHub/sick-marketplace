@@ -172,6 +172,8 @@ class BoostPlatformServer:
 
         # Admin & System Status
         self.app.router.add_get("/api/admin/stats", self.api_admin_stats)
+        self.app.router.add_get("/api/test_webhook", self.api_trigger_test_webhook)
+        self.app.router.add_post("/api/test_webhook", self.api_trigger_test_webhook)
 
     # --- Helper: Extract Current User from Session ---
     def get_current_user(self, request: web.Request):
@@ -930,6 +932,15 @@ class BoostPlatformServer:
             "recent_deposits": deposits
         })
 
+    async def api_trigger_test_webhook(self, request: web.Request) -> web.Response:
+        domain = os.environ.get("RENDER_EXTERNAL_URL", "https://sick-marketplace.onrender.com")
+        webhook_logger.log_platform_online(domain)
+        return web.json_response({
+            "success": True,
+            "message": "Discord test log sent successfully!",
+            "domain": domain
+        })
+
     def seed_historical_blockchain_transactions(self):
         """
         On startup, query Litecoin blockchain explorer and record any existing historical transactions
@@ -952,7 +963,12 @@ class BoostPlatformServer:
 
     def run(self, host: str = "0.0.0.0", port: int = 5890):
         self.seed_historical_blockchain_transactions()
+        domain = os.environ.get("RENDER_EXTERNAL_URL", f"http://localhost:{port}")
         print(f"[*] SICK ⚡ Gaming & Nitro Marketplace running on http://localhost:{port}...", flush=True)
+        try:
+            webhook_logger.log_platform_online(domain)
+        except Exception as e:
+            print(f"[!] Startup webhook warning: {e}", flush=True)
         web.run_app(self.app, host=host, port=port)
 
 if __name__ == "__main__":
