@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚡ SICK GAMING & NITRO MARKETPLACE — FRONTEND ENGINE 4.0
+// ⚡ SICK GAMING & NITRO MARKETPLACE — FRONTEND ENGINE 4.0 (ENGLISH)
 // Simplified, modern tabbed workspace & automated Litecoin fulfillment
 // ==========================================================================
 
@@ -114,8 +114,8 @@ function renderNavGuest() {
   const container = document.getElementById("navAuthContainer");
   if (!container) return;
   container.innerHTML = `
-    <button class="btn btn-outline" onclick="openAuthModal('login')">Anmelden</button>
-    <button class="btn btn-primary glow-btn" onclick="openAuthModal('register')">Registrieren</button>
+    <button class="btn btn-outline" onclick="openAuthModal('login')">Sign In</button>
+    <button class="btn btn-primary glow-btn" onclick="openAuthModal('register')">Get Started</button>
   `;
 }
 
@@ -135,13 +135,13 @@ function renderNavUser() {
   if (container) {
     container.innerHTML = `
       <div class="user-pill">
-        <button class="user-profile-btn" onclick="openProfileModal()" title="Profil & Einstellungen">
+        <button class="user-profile-btn" onclick="openProfileModal()" title="Profile & Account Settings">
           <span>👤 ${escapeHtml(currentUser.username)}</span>
           <span style="font-size:0.75rem;color:var(--text-dim);">⚙️</span>
         </button>
         <span class="user-balance-badge" id="navBalanceDisplay">${balFormatted}</span>
-        <button class="btn btn-sm btn-secondary" onclick="scrollToDeposit()" title="Guthaben aufladen">+ Aufladen</button>
-        <button class="btn btn-sm btn-outline" onclick="handleLogout()" title="Abmelden">Logout</button>
+        <button class="btn btn-sm btn-secondary" onclick="scrollToDeposit()" title="Add Funds">+ Add Funds</button>
+        <button class="btn btn-sm btn-outline" onclick="handleLogout()" title="Sign Out">Logout</button>
       </div>
     `;
   }
@@ -161,11 +161,11 @@ function switchGateTab(mode) {
   if (mode === "login") {
     if (tabLogin) tabLogin.classList.add("active");
     if (tabRegister) tabRegister.classList.remove("active");
-    if (submitBtn) submitBtn.textContent = "Jetzt Einloggen & Boosten";
+    if (submitBtn) submitBtn.textContent = "Sign In & Start Boosting";
   } else {
     if (tabRegister) tabRegister.classList.add("active");
     if (tabLogin) tabLogin.classList.remove("active");
-    if (submitBtn) submitBtn.textContent = "Konto erstellen & Starten";
+    if (submitBtn) submitBtn.textContent = "Create Account & Start";
   }
 }
 
@@ -183,7 +183,7 @@ async function handleGateAuthSubmit(event) {
 
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.textContent = "Authentifiziere...";
+    submitBtn.textContent = "Authenticating...";
   }
   if (errorEl) errorEl.style.display = "none";
 
@@ -201,26 +201,26 @@ async function handleGateAuthSubmit(event) {
       setWorkspaceVisibility(true);
       renderNavUser();
       calculateByotPrice();
-      showToast(activeGateMode === "register" ? "Konto erfolgreich erstellt! Willkommen bei SICK." : `Willkommen zurück, ${currentUser.username}!`, "success");
+      showToast(activeGateMode === "register" ? "Account created successfully! Welcome to SICK." : `Welcome back, ${currentUser.username}!`, "success");
       await loadUserOrders();
       
       startOrderPolling();
       startBlockchainAutoScanner();
     } else {
       if (errorEl) {
-        errorEl.textContent = data.message || "Anmeldung fehlgeschlagen.";
+        errorEl.textContent = data.message || "Authentication failed.";
         errorEl.style.display = "block";
       }
     }
   } catch (err) {
     if (errorEl) {
-      errorEl.textContent = "Verbindungsfehler. Bitte erneut versuchen.";
+      errorEl.textContent = "Connection error. Please try again.";
       errorEl.style.display = "block";
     }
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.textContent = activeGateMode === "register" ? "Konto erstellen & Starten" : "Jetzt Einloggen & Boosten";
+      submitBtn.textContent = activeGateMode === "register" ? "Create Account & Start" : "Sign In & Start Boosting";
     }
   }
 }
@@ -253,11 +253,11 @@ function switchAuthTab(mode) {
   if (mode === "login") {
     if (tabLogin) tabLogin.classList.add("active");
     if (tabRegister) tabRegister.classList.remove("active");
-    if (submitBtn) submitBtn.textContent = "Anmelden";
+    if (submitBtn) submitBtn.textContent = "Sign In";
   } else {
     if (tabRegister) tabRegister.classList.add("active");
     if (tabLogin) tabLogin.classList.remove("active");
-    if (submitBtn) submitBtn.textContent = "Konto registrieren";
+    if (submitBtn) submitBtn.textContent = "Create Account";
   }
   const err = document.getElementById("authErrorMsg");
   if (err) err.style.display = "none";
@@ -273,7 +273,7 @@ async function handleAuthSubmit(event) {
   if (!username || !password) return;
 
   submitBtn.disabled = true;
-  submitBtn.textContent = "Wird verarbeitet...";
+  submitBtn.textContent = "Processing...";
   errorEl.style.display = "none";
 
   try {
@@ -291,21 +291,21 @@ async function handleAuthSubmit(event) {
       renderNavUser();
       calculateByotPrice();
       closeAuthModal();
-      showToast(activeAuthMode === "register" ? "Konto erfolgreich erstellt! Willkommen bei SICK." : `Willkommen zurück, ${currentUser.username}!`, "success");
+      showToast(activeAuthMode === "register" ? "Account created successfully! Welcome to SICK." : `Welcome back, ${currentUser.username}!`, "success");
       await loadUserOrders();
       
       startOrderPolling();
       startBlockchainAutoScanner();
     } else {
-      errorEl.textContent = data.message || "Anmeldung fehlgeschlagen.";
+      errorEl.textContent = data.message || "Authentication failed.";
       errorEl.style.display = "block";
     }
   } catch (err) {
-    errorEl.textContent = "Serververbindungsfehler.";
+    errorEl.textContent = "Server connection error.";
     errorEl.style.display = "block";
   } finally {
     submitBtn.disabled = false;
-    submitBtn.textContent = activeAuthMode === "register" ? "Konto registrieren" : "Anmelden";
+    submitBtn.textContent = activeAuthMode === "register" ? "Create Account" : "Sign In";
   }
 }
 
@@ -316,12 +316,12 @@ async function handleLogout() {
   currentUser = null;
   setWorkspaceVisibility(false);
   renderNavGuest();
-  showToast("Erfolgreich abgemeldet.", "success");
+  showToast("Logged out successfully.", "success");
   if (pollingTimer) clearInterval(pollingTimer);
   stopBlockchainAutoScanner();
   const tbody = document.getElementById("ordersTableBody");
   if (tbody) {
-    tbody.innerHTML = `<tr><td colspan="8" class="table-empty-msg">Bitte logge dich ein, um deine Bestellungen zu sehen.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="table-empty-msg">Please sign in to view your orders.</td></tr>`;
   }
   closeProfileModal();
 }
@@ -339,7 +339,7 @@ function openProfileModal() {
   const overlay = document.getElementById("profileModalOverlay");
 
   if (nameEl) nameEl.textContent = currentUser.username;
-  if (balEl) balEl.textContent = `Guthaben: ${currentUser.balance_eur.toFixed(2)} €`;
+  if (balEl) balEl.textContent = `Balance: ${currentUser.balance_eur.toFixed(2)} €`;
   if (keyInput) keyInput.value = currentUser.api_key || "";
   if (overlay) overlay.classList.add("active");
 }
@@ -354,7 +354,7 @@ function copyProfileApiKey() {
   const input = document.getElementById("profileApiKeyInput");
   if (!input || !input.value) return;
   navigator.clipboard.writeText(input.value).then(() => {
-    showToast("SICK API Key in die Zwischenablage kopiert!", "success");
+    showToast("SICK API Key copied to clipboard!", "success");
   }).catch(() => {
     showToast("API Key: " + input.value, "success");
   });
@@ -362,7 +362,7 @@ function copyProfileApiKey() {
 
 async function handleRegenerateKey() {
   if (!currentUser) return;
-  if (!confirm("Möchtest du wirklich einen neuen SICK API-Key generieren?")) {
+  if (!confirm("Are you sure you want to generate a new SICK API Key?")) {
     return;
   }
   try {
@@ -372,12 +372,12 @@ async function handleRegenerateKey() {
       currentUser.api_key = data.api_key;
       const keyInput = document.getElementById("profileApiKeyInput");
       if (keyInput) keyInput.value = data.api_key;
-      showToast("Neuer SICK API Key erfolgreich generiert!", "success");
+      showToast("New SICK API Key generated successfully!", "success");
     } else {
-      showToast(data.message || "Fehler beim Generieren des Keys.", "error");
+      showToast(data.message || "Failed to generate new key.", "error");
     }
   } catch (e) {
-    showToast("Serverfehler beim Generieren des Keys.", "error");
+    showToast("Server error generating API key.", "error");
   }
 }
 
@@ -389,13 +389,13 @@ async function handleChangePassword(event) {
 
   if (!currentPass || !newPass) return;
   if (newPass.length < 4) {
-    showToast("Das neue Passwort muss mindestens 4 Zeichen lang sein.", "error");
+    showToast("New password must be at least 4 characters long.", "error");
     return;
   }
 
   if (btn) {
     btn.disabled = true;
-    btn.textContent = "Wird aktualisiert...";
+    btn.textContent = "Updating...";
   }
 
   try {
@@ -406,19 +406,19 @@ async function handleChangePassword(event) {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      showToast("Passwort erfolgreich geändert!", "success");
+      showToast("Password updated successfully!", "success");
       document.getElementById("currentPassInput").value = "";
       document.getElementById("newPassInput").value = "";
       closeProfileModal();
     } else {
-      showToast(data.message || "Fehler beim Ändern des Passworts.", "error");
+      showToast(data.message || "Failed to change password.", "error");
     }
   } catch (e) {
-    showToast("Serverfehler beim Ändern des Passworts.", "error");
+    showToast("Server error updating password.", "error");
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.textContent = "Passwort aktualisieren";
+      btn.textContent = "Update Password";
     }
   }
 }
@@ -489,10 +489,10 @@ function updateTokenCounter() {
 
   const count = parseTokensFromText(textarea.value).length;
   if (count > 0) {
-    counterBadge.textContent = `${count} Token${count > 1 ? 's' : ''} erkannt`;
+    counterBadge.textContent = `${count} Token${count > 1 ? 's' : ''} Detected`;
     counterBadge.classList.add("has-tokens");
   } else {
-    counterBadge.textContent = `0 Tokens erkannt`;
+    counterBadge.textContent = `0 Tokens Detected`;
     counterBadge.classList.remove("has-tokens");
   }
   calculateByotPrice();
@@ -516,21 +516,21 @@ function calculateByotPrice() {
 
   const packs = Math.max(1, Math.ceil(val / 14.0));
   const price = parseFloat((packs * 0.20).toFixed(2));
-  const priceStr = price.toFixed(2).replace(".", ",") + " €";
+  const priceStr = price.toFixed(2) + " €";
 
   if (costDisplay) costDisplay.textContent = priceStr;
 
   const userBal = currentUser ? currentUser.balance_eur : 0;
   if (balDisplay) {
-    balDisplay.textContent = userBal.toFixed(2).replace(".", ",") + " €";
+    balDisplay.textContent = userBal.toFixed(2) + " €";
   }
 
   if (btnText && btn) {
     if (currentUser && userBal < price) {
-      btnText.textContent = `Guthaben aufladen (${priceStr} benötigt)`;
+      btnText.textContent = `Top Up Balance (${priceStr} required)`;
       btn.classList.add("needs-deposit");
     } else {
-      btnText.textContent = `Jetzt Server Boosten (${priceStr})`;
+      btnText.textContent = `Boost Server Now (${priceStr})`;
       btn.classList.remove("needs-deposit");
     }
   }
@@ -588,25 +588,25 @@ function applyProfilePreset(presetKey) {
   if (presetKey === "gamer") {
     nickInput.value = "🎮 Pro Gamer";
     bioTextarea.value = "Level 100 Boss 🕹️ Ready for scrims | Playing Discord | GG WP!";
-    showToast("Preset 'Gamer Squad' angewendet!", "success");
+    showToast("Preset 'Gamer Squad' applied!", "success");
   } else if (presetKey === "vip") {
     nickInput.value = "👑 Server VIP";
     bioTextarea.value = "✨ Certified SICK Booster • Elite Member • Boosting this server to Level 3!";
-    showToast("Preset 'VIP Member' angewendet!", "success");
+    showToast("Preset 'VIP Member' applied!", "success");
   } else if (presetKey === "anime") {
     nickInput.value = "🌸 Senpai";
     bioTextarea.value = "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Just an otaku boosting awesome servers! 🍜";
-    showToast("Preset 'Aesthetic Anime' angewendet!", "success");
+    showToast("Preset 'Aesthetic Anime' applied!", "success");
   } else if (presetKey === "sick") {
     nickInput.value = "⚡ SICK Booster";
     bioTextarea.value = "🚀 Supercharged with SICK Marketplace • discord.gg/NitroHQ!";
-    showToast("Preset 'SICK Booster' angewendet!", "success");
+    showToast("Preset 'SICK Booster' applied!", "success");
   } else if (presetKey === "clear") {
     nickInput.value = "";
     bioTextarea.value = "";
     avatarInput.value = "";
     bannerInput.value = "";
-    showToast("Custom Profil zurückgesetzt.", "success");
+    showToast("Custom profile cleared.", "success");
   }
 }
 
@@ -615,13 +615,13 @@ function applyProfilePreset(presetKey) {
 async function handlePlaceByotOrder() {
   if (!currentUser) {
     openAuthModal("login");
-    showToast("Bitte logge dich zuerst ein.", "error");
+    showToast("Please sign in first.", "error");
     return;
   }
 
   const price = calculateByotPrice();
   if (currentUser.balance_eur < price) {
-    showToast(`Dein Guthaben (${currentUser.balance_eur.toFixed(2)} €) reicht nicht aus. Lade kurz ${price.toFixed(2)} € auf!`, "error");
+    showToast(`Insufficient balance (${currentUser.balance_eur.toFixed(2)} €). Please top up ${price.toFixed(2)} €!`, "error");
     scrollToDeposit();
     return;
   }
@@ -637,14 +637,14 @@ async function handlePlaceByotOrder() {
   const btn = document.getElementById("btnStartByotBoost");
 
   if (!invite) {
-    showToast("Bitte gib den Discord Server-Invite ein!", "error");
+    showToast("Please enter a Discord server invite code or link!", "error");
     if (inviteInput) inviteInput.focus();
     return;
   }
 
   const tokensList = parseTokensFromText(rawTokens);
   if (tokensList.length === 0) {
-    showToast("Bitte füge deine Tokens in das Feld ein!", "error");
+    showToast("Please paste your tokens into the tokens box!", "error");
     document.getElementById("byotTokensTextarea")?.focus();
     return;
   }
@@ -652,7 +652,7 @@ async function handlePlaceByotOrder() {
   btn.disabled = true;
   btn.innerHTML = `
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" class="spin-icon"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-    <span>Starte Boosts über die SICK Cloud Engine...</span>
+    <span>Deploying Boosts via SICK Cloud Engine...</span>
   `;
 
   try {
@@ -674,7 +674,7 @@ async function handlePlaceByotOrder() {
     const data = await res.json();
 
     if (res.ok && data.success) {
-      showToast(`🎉 Bestellung #${data.order_id} gestartet! ${data.tokens_count} Tokens eingesetzt.`, "success");
+      showToast(`🎉 Order #${data.order_id} started! Dispatched ${data.tokens_count} tokens.`, "success");
       currentUser.balance_eur = data.new_balance;
       renderNavUser();
       calculateByotPrice();
@@ -685,10 +685,10 @@ async function handlePlaceByotOrder() {
       await loadUserOrders();
       scrollToOrders();
     } else if (data.insufficient_balance) {
-      showToast(`Guthaben reicht nicht aus (${data.current_balance.toFixed(2)} €). Bitte lade kurz per Litecoin auf!`, "error");
+      showToast(`Insufficient balance (${data.current_balance.toFixed(2)} €). Please top up via Litecoin!`, "error");
       scrollToDeposit();
     } else {
-      showToast(data.message || "Fehler beim Starten der Bestellung.", "error");
+      showToast(data.message || "Failed to start boost order.", "error");
       if (data.refunded) {
         currentUser.balance_eur = data.new_balance;
         renderNavUser();
@@ -696,12 +696,12 @@ async function handlePlaceByotOrder() {
       }
     }
   } catch (err) {
-    showToast("Serverfehler beim Starten des Boosts.", "error");
+    showToast("Server error starting boost order.", "error");
   } finally {
     btn.disabled = false;
     btn.innerHTML = `
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-      <span id="byotStartBtnText">Jetzt Server Boosten (0,20 €)</span>
+      <span id="byotStartBtnText">Boost Server Now (0.20 €)</span>
     `;
     calculateByotPrice();
   }
@@ -736,8 +736,8 @@ function showAmountStep() {
   if (stepInvoice) stepInvoice.style.display = "none";
   if (stepAmount) stepAmount.style.display = "flex";
 
-  if (title) title.textContent = "Guthaben aufladen";
-  if (sub) sub.textContent = "Zahle sicher mit Litecoin (LTC) • 100% automatische Gutschrift";
+  if (title) title.textContent = "Top Up Balance";
+  if (sub) sub.textContent = "Pay securely via Litecoin (LTC) • 100% automated credit";
 }
 
 function showInvoiceStep() {
@@ -750,7 +750,7 @@ function showInvoiceStep() {
   if (stepInvoice) stepInvoice.style.display = "flex";
 
   if (title) title.textContent = "Litecoin (LTC) Checkout";
-  if (sub) sub.textContent = "Sende den exakten LTC-Betrag zur automatischen Gutschrift";
+  if (sub) sub.textContent = "Send exact LTC amount for automated credit";
 }
 
 function setDepositAmount(amount, el) {
@@ -785,7 +785,7 @@ async function proceedToInvoice() {
   if (input) input.value = amt.toFixed(2);
 
   if (!currentUser) {
-    showToast("Bitte logge dich zuerst ein.", "info");
+    showToast("Please sign in first to create an invoice.", "info");
     openAuthModal("login");
     return;
   }
@@ -793,7 +793,7 @@ async function proceedToInvoice() {
   const btn = document.getElementById("btnProceedToInvoice");
   const btnText = document.getElementById("btnProceedText");
   if (btn) btn.disabled = true;
-  if (btnText) btnText.textContent = "Generiere Blockchain-Rechnung...";
+  if (btnText) btnText.textContent = "Generating Blockchain Invoice...";
 
   try {
     const res = await fetch("/api/payment/invoice/create", {
@@ -804,15 +804,15 @@ async function proceedToInvoice() {
     const data = await res.json();
     if (res.ok && data.success && data.invoice) {
       renderInvoice(data.invoice);
-      showToast(`⚡ Litecoin Rechnung für ${amt.toFixed(2)} € erstellt!`, "success");
+      showToast(`⚡ Litecoin invoice for ${amt.toFixed(2)} € ready!`, "success");
     } else {
-      showToast(data.message || "Fehler beim Erstellen der Rechnung.", "error");
+      showToast(data.message || "Failed to generate invoice.", "error");
     }
   } catch (e) {
-    showToast("Verbindungsfehler beim Erstellen der Rechnung.", "error");
+    showToast("Server connection error generating invoice.", "error");
   } finally {
     if (btn) btn.disabled = false;
-    if (btnText) btnText.textContent = "Litecoin-Zahlung starten";
+    if (btnText) btnText.textContent = "Proceed to Litecoin Checkout";
   }
 }
 
@@ -825,10 +825,9 @@ function populateInvoiceFields(inv) {
   const fieldAddress = document.getElementById("invoiceFieldAddress");
   const fieldPaymentId = document.getElementById("invoiceFieldPaymentId");
   const statusBadge = document.getElementById("invoiceStatusBadge");
-  const statusText = document.getElementById("invoiceStatusText");
 
   if (qrImg && inv.qr_url) qrImg.src = inv.qr_url;
-  if (receiveVal) receiveVal.textContent = `${inv.amount_eur.toFixed(2).replace(".", ",")} EUR`;
+  if (receiveVal) receiveVal.textContent = `${inv.amount_eur.toFixed(2)} EUR`;
   if (fieldLtc) fieldLtc.textContent = inv.amount_ltc_str || `${inv.amount_ltc_raw.toFixed(8)} LTC`;
   if (fieldAddress) fieldAddress.textContent = inv.wallet_address;
   if (fieldPaymentId) fieldPaymentId.textContent = inv.payment_id;
@@ -836,12 +835,12 @@ function populateInvoiceFields(inv) {
   if (inv.status === "completed") {
     if (statusBadge) {
       statusBadge.className = "invoice-badge-pill status-completed";
-      statusBadge.innerHTML = `<span>✅</span><span>Zahlung bestätigt &amp; gutgeschrieben!</span>`;
+      statusBadge.innerHTML = `<span>✅</span><span>Payment Confirmed &amp; Credited!</span>`;
     }
   } else {
     if (statusBadge) {
       statusBadge.className = "invoice-badge-pill status-waiting";
-      statusBadge.innerHTML = `<span class="invoice-status-dot"></span><span id="invoiceStatusText">Warte auf Zahlung im Litecoin-Netzwerk...</span>`;
+      statusBadge.innerHTML = `<span class="invoice-status-dot"></span><span id="invoiceStatusText">Waiting for payment on Litecoin network...</span>`;
     }
   }
 
@@ -861,7 +860,7 @@ function startInvoiceCountdown(totalSeconds) {
     const el = document.getElementById("invoiceCountdownText");
     if (!el) return;
     if (invoiceCountdownSeconds <= 0) {
-      el.textContent = "Abgelaufen";
+      el.textContent = "Expired";
       return;
     }
     const hours = Math.floor(invoiceCountdownSeconds / 3600);
@@ -884,17 +883,17 @@ function startInvoiceCountdown(totalSeconds) {
 function copyInvoiceValue(type, btnEl) {
   if (!activeInvoiceData) return;
   let text = "";
-  let label = "In die Zwischenablage kopiert!";
+  let label = "Copied to clipboard!";
 
   if (type === "ltc") {
     text = (activeInvoiceData.amount_ltc_raw || 0.00268142).toFixed(8);
-    label = `LTC Betrag (${text}) kopiert!`;
+    label = `LTC Amount (${text}) copied!`;
   } else if (type === "address") {
     text = activeInvoiceData.wallet_address || "LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc";
-    label = "Litecoin-Adresse kopiert!";
+    label = "Litecoin Address copied!";
   } else if (type === "payment_id") {
     text = activeInvoiceData.payment_id || "5784378544";
-    label = `Tracking ID (${text}) kopiert!`;
+    label = `Tracking ID (${text}) copied!`;
   }
 
   navigator.clipboard.writeText(text).then(() => {
@@ -902,10 +901,10 @@ function copyInvoiceValue(type, btnEl) {
     if (btnEl) {
       btnEl.classList.add("copied");
       const textSpan = btnEl.querySelector(".copy-text");
-      if (textSpan) textSpan.textContent = "✓ Kopiert";
+      if (textSpan) textSpan.textContent = "✓ Copied";
       setTimeout(() => {
         btnEl.classList.remove("copied");
-        if (textSpan) textSpan.textContent = "Kopieren";
+        if (textSpan) textSpan.textContent = "Copy";
       }, 1500);
     }
   }).catch(() => {
@@ -917,7 +916,7 @@ async function handleRefreshInvoiceStatus() {
   const btn = document.getElementById("btnInvoiceRefresh");
   const btnText = document.getElementById("btnInvoiceRefreshText");
   if (btn) btn.classList.add("scanning");
-  if (btnText) btnText.textContent = "Scanne Litecoin Blockchain...";
+  if (btnText) btnText.textContent = "Scanning Litecoin Blockchain...";
 
   try {
     const res = await fetch("/api/payment/invoice/check", { method: "POST" });
@@ -935,27 +934,27 @@ async function handleRefreshInvoiceStatus() {
         const statusBadge = document.getElementById("invoiceStatusBadge");
         if (statusBadge) {
           statusBadge.className = "invoice-badge-pill status-completed";
-          statusBadge.innerHTML = `<span>✅</span><span>Zahlung bestätigt! (+${data.amount_eur.toFixed(2)} €)</span>`;
+          statusBadge.innerHTML = `<span>✅</span><span>Payment Confirmed! (+${data.amount_eur.toFixed(2)} €)</span>`;
         }
-        showToast(`🎉 Zahlung verifiziert! +${data.amount_eur.toFixed(2)} € deinem Guthaben gutgeschrieben!`, "success");
+        showToast(`🎉 Payment verified! +${data.amount_eur.toFixed(2)} € credited to your balance!`, "success");
         await loadUserOrders();
       } else if (data.current_balance !== undefined && data.current_balance > 0) {
         const statusBadge = document.getElementById("invoiceStatusBadge");
         if (statusBadge) {
           statusBadge.className = "invoice-badge-pill status-completed";
-          statusBadge.innerHTML = `<span>✅</span><span>Guthaben aktiv: ${data.current_balance.toFixed(2)} €</span>`;
+          statusBadge.innerHTML = `<span>✅</span><span>Active Balance: ${data.current_balance.toFixed(2)} €</span>`;
         }
-        showToast(`✅ Dein Guthaben (${data.current_balance.toFixed(2)} €) ist auf deinem Account bereit!`, "success");
+        showToast(`✅ Your balance (${data.current_balance.toFixed(2)} €) is ready on your account!`, "success");
       } else {
-        showToast("Scanne Blockchain... Noch keine neue ungebuchte Zahlung gefunden.", "info");
+        showToast("Scanning blockchain... No uncredited transactions detected yet.", "info");
       }
     }
   } catch (e) {
-    showToast("Verbindungsfehler beim Prüfen der Blockchain.", "error");
+    showToast("Connection error checking blockchain.", "error");
   } finally {
     setTimeout(() => {
       if (btn) btn.classList.remove("scanning");
-      if (btnText) btnText.textContent = "Status prüfen (Auto-Erkennung aktiv)";
+      if (btnText) btnText.textContent = "Check Status (Auto-Detector Active)";
     }, 600);
   }
 }
@@ -980,10 +979,10 @@ function startBlockchainAutoScanner() {
           const statusBadge = document.getElementById("invoiceStatusBadge");
           if (statusBadge) {
             statusBadge.className = "invoice-badge-pill status-completed";
-            statusBadge.innerHTML = `<span>✅</span><span>Zahlung erhalten! (+${data.amount_eur.toFixed(2)} €)</span>`;
+            statusBadge.innerHTML = `<span>✅</span><span>Payment Received! (+${data.amount_eur.toFixed(2)} €)</span>`;
           }
 
-          showToast(`🎉 Litecoin-Zahlung erkannt! +${data.amount_eur.toFixed(2)} € automatisch gutgeschrieben!`, "success");
+          showToast(`🎉 Litecoin payment detected! +${data.amount_eur.toFixed(2)} € credited automatically!`, "success");
           await loadUserOrders();
         }
       }
@@ -1012,7 +1011,7 @@ async function loadUserOrders() {
       const orders = data.orders || [];
 
       if (orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="table-empty-msg">Noch keine Bestellungen aufgegeben. Gib oben einen Server-Invite ein!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="table-empty-msg">No boost orders placed yet. Enter a server invite above to begin!</td></tr>`;
         return;
       }
 
@@ -1020,13 +1019,13 @@ async function loadUserOrders() {
         let statusBadge = "";
         const s = (o.status || "pending").toLowerCase();
         if (s === "completed") {
-          statusBadge = `<span class="badge-status badge-completed">✅ Fertig (${o.boosts}/${o.boosts})</span>`;
+          statusBadge = `<span class="badge-status badge-completed">✅ Completed (${o.boosts}/${o.boosts})</span>`;
         } else if (s === "in_progress" || s === "running") {
-          statusBadge = `<span class="badge-status badge-in-progress">🚀 Läuft</span>`;
+          statusBadge = `<span class="badge-status badge-in-progress">🚀 In Progress</span>`;
         } else if (s === "failed") {
-          statusBadge = `<span class="badge-status badge-failed" title="${escapeHtml(o.error_msg || '')}">❌ Fehlgeschlagen</span>`;
+          statusBadge = `<span class="badge-status badge-failed" title="${escapeHtml(o.error_msg || '')}">❌ Failed</span>`;
         } else {
-          statusBadge = `<span class="badge-status badge-pending">⏳ Wartend</span>`;
+          statusBadge = `<span class="badge-status badge-pending">⏳ Pending</span>`;
         }
 
         let modeBadge = `<span class="badge-status" style="background:rgba(157,78,221,0.15);color:#d8b4fe;border:1px solid rgba(157,78,221,0.3);">⚡ Stock</span>`;
