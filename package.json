@@ -1,0 +1,13 @@
+{
+  "name": "sick-marketplace",
+  "version": "1.0.0",
+  "description": "SICK Gaming & Nitro Marketplace",
+  "main": "server.py",
+  "scripts": {
+    "build": "pip install -r requirements.txt",
+    "start": "python server.py"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
