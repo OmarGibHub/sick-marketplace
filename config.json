@@ -1,0 +1,48 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 5890,
+    "secret_key": "primeboosts_super_secure_jwt_secret_key_change_me_if_needed"
+  },
+  "pricing": {
+    "price_per_14_boosts_eur": 0.2,
+    "price_per_single_boost_eur": 0.015,
+    "price_byot_per_order_eur": 0.2,
+    "min_deposit_eur": 0.2
+  },
+  "autobuy": {
+    "enabled": true,
+    "default_boosts": 14,
+    "price_per_order_eur": 0.2
+  },
+  "crypto": {
+    "ltc_wallet_address": "LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc",
+    "currency": "LTC",
+    "check_interval_seconds": 30,
+    "blockchain_api_url": "https://litecoinspace.org/api"
+  },
+  "salta7": {
+    "enabled": true,
+    "api_key": "JUHX3K3Z8FZD4FN5C2M6I2KZDMZS2JIG",
+    "base_url": "https://salta7.store",
+    "default_mode": "stock"
+  },
+  "branding": {
+    "site_name": "SICK ⚡ Gaming & Nitro Marketplace",
+    "currency_symbol": "€",
+    "support_discord": "https://discord.gg/NitroHQ",
+    "tagline": "Automated Discord Server Boosts & High-Speed Cloud Fulfillment"
+  },
+  "tunnel": {
+    "provider": "auto",
+    "ngrok_authtoken": "",
+    "ngrok_domain": "",
+    "cloudflare_token": ""
+  },
+  "maintenance": {
+    "enabled": false,
+    "admin_secret": "sick_admin_pass",
+    "message": "Wir führen aktuell geplante Upgrades am SICK Marketplace durch. Alle Bestellungen, Accounts und Guthaben sind absolut sicher!",
+    "discord_url": "https://discord.gg/NitroHQ"
+  }
+}

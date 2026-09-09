@@ -1,0 +1,11 @@
+﻿services:
+  - type: web
+    name: sick-marketplace
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: PORT
+        value: 5890
+      - key: PYTHONUNBUFFERED
+        value: "1"

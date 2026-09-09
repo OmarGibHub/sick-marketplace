@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SICK ⚡ Gaming &amp; Nitro Marketplace | Discord Server Boosts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" type="image/jpeg" href="/static/assets/sick_logo.jpg">
+</head>
+<body>
+
+  <!-- ==================== HEADER / TOP NAVIGATION ==================== -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand" onclick="switchMainTab('boost')">
+        <div class="brand-logo-glow">
+          <img src="/static/assets/sick_logo.jpg" alt="SICK Logo" class="brand-logo-img">
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">SICK<span class="brand-badge">MARKET</span></span>
+          <span class="brand-sub">GAMING &amp; NITRO AUTOMATION</span>
+        </div>
+      </div>
+
+      <!-- Quick Navigation (Active after Login) -->
+      <nav class="nav-links" id="mainNavLinks" style="display: none;">
+        <button type="button" class="nav-link active" id="navLinkBoost" onclick="switchMainTab('boost')">⚡ Server Boosten</button>
+        <button type="button" class="nav-link" id="navLinkDeposit" onclick="switchMainTab('deposit')">💳 Guthaben aufladen</button>
+        <button type="button" class="nav-link" id="navLinkOrders" onclick="switchMainTab('orders')">📜 Bestellungen</button>
+        <a href="https://discord.gg/NitroHQ" target="_blank" class="nav-link dc-link">💬 Discord (gg/NitroHQ)</a>
+      </nav>
+
+      <!-- User or Sign In Buttons -->
+      <div class="nav-auth" id="navAuthContainer">
+        <button class="btn btn-outline" onclick="openAuthModal('login')">Anmelden</button>
+        <button class="btn btn-primary glow-btn" onclick="openAuthModal('register')">Registrieren</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== AUTH GATE (FOR GUESTS) ==================== -->
+  <section class="auth-gate-wrapper" id="authGateContainer">
+    <div class="auth-gate-card">
+      <div class="auth-gate-hero-img">
+        <img src="/static/assets/sick_banner.webp" alt="SICK Banner" class="auth-banner-img">
+      </div>
+      
+      <div class="auth-gate-content">
+        <div class="auth-gate-badge">
+          <span class="pulse-dot"></span>
+          <span>SICK CLOUD AUTOMATION</span>
+          <span>•</span>
+          <a href="https://discord.gg/NitroHQ" target="_blank" class="badge-link">discord.gg/NitroHQ</a>
+        </div>
+
+        <h1 class="auth-gate-title">Discord Server Boosts &amp; Nitro Engine</h1>
+        <p class="auth-gate-desc">
+          Booste jeden Discord Server blitzschnell auf Level 3. Nutze deine eigenen Tokens (BYOT) mit individuellem Profil, oder lade Guthaben direkt und anonym via Litecoin (LTC) auf.
+        </p>
+
+        <!-- Inline Sign In / Register Form -->
+        <div class="auth-gate-form-box">
+          <div class="modal-tabs">
+            <button class="modal-tab active" id="gateTabLoginBtn" onclick="switchGateTab('login')">Anmelden</button>
+            <button class="modal-tab" id="gateTabRegisterBtn" onclick="switchGateTab('register')">Konto erstellen</button>
+          </div>
+
+          <form id="gateAuthForm" onsubmit="handleGateAuthSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Benutzername</label>
+              <input type="text" id="gateAuthUsernameInput" class="input-field" placeholder="Dein Benutzername" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Passwort</label>
+              <input type="password" id="gateAuthPasswordInput" class="input-field" placeholder="Dein Passwort" required autocomplete="current-password">
+            </div>
+
+            <div class="modal-error" id="gateAuthErrorMsg" style="display: none;"></div>
+
+            <button type="submit" class="btn btn-primary btn-block glow-btn" id="gateAuthSubmitBtn">
+              Jetzt Einloggen &amp; Boosten
+            </button>
+          </form>
+        </div>
+
+        <!-- Features Showcase -->
+        <div class="auth-gate-features">
+          <div class="gate-feat"><span class="feat-icon">⚡</span> 14x Boosts für nur <strong>0,20 €</strong></div>
+          <div class="gate-feat"><span class="feat-icon">🔑</span> BYOT Token Booster mit Custom Bio</div>
+          <div class="gate-feat"><span class="feat-icon">💎</span> Sofortige 0,20 € LTC Einzahlung</div>
+          <div class="gate-feat"><span class="feat-icon">🛡️</span> 100% Sicher &amp; Vollautomatisiert</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN WORKSPACE (AFTER LOGIN) ==================== -->
+  <main class="main-content" id="authenticatedAppContainer" style="display: none;">
+    
+    <!-- TOP WORKSPACE BAR (WELCOME & BALANCE) -->
+    <div class="workspace-top-bar">
+      <div class="user-greeting">
+        <span class="greeting-wave">👋</span>
+        <div>
+          <h2 class="greeting-title">Willkommen im SICK Marketplace</h2>
+          <p class="greeting-sub">Wähle einfach unten eine Aktion aus — schnell, sicher und kinderleicht.</p>
+        </div>
+      </div>
+      <div class="quick-balance-box">
+        <span class="quick-balance-label">DEIN GUTHABEN</span>
+        <span class="quick-balance-val" id="topBalanceDisplay">0.00 €</span>
+        <button type="button" class="btn btn-sm btn-primary glow-btn" onclick="switchMainTab('deposit')">
+          + Guthaben aufladen
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN SEGMENTED TAB SWITCHER -->
+    <div class="segmented-tabs-wrapper">
+      <div class="segmented-tabs">
+        <button type="button" class="tab-btn active" id="tabBtnBoost" onclick="switchMainTab('boost')">
+          <span class="tab-btn-icon">⚡</span>
+          <div class="tab-btn-text-group">
+            <span class="tab-btn-title">Server Boosten</span>
+            <span class="tab-btn-sub">BYOT Token Booster</span>
+          </div>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabBtnDeposit" onclick="switchMainTab('deposit')">
+          <span class="tab-btn-icon">💳</span>
+          <div class="tab-btn-text-group">
+            <span class="tab-btn-title">Guthaben aufladen</span>
+            <span class="tab-btn-sub">Litecoin (LTC)</span>
+          </div>
+          <span class="tab-chip">ab 0,20 €</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabBtnOrders" onclick="switchMainTab('orders')">
+          <span class="tab-btn-icon">📜</span>
+          <div class="tab-btn-text-group">
+            <span class="tab-btn-title">Meine Bestellungen</span>
+            <span class="tab-btn-sub">Live Status</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 1: SERVER BOOSTEN ==================== -->
+    <div class="tab-pane active" id="paneBoost">
+      <div class="single-card-wrap">
+        <div class="card booster-card" id="order-section">
+          
+          <!-- Card Header -->
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble cyan-glow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <div>
+                <h3>Discord Server Booster</h3>
+                <p class="card-subtitle">Füge deinen Server-Invite und deine Tokens ein • Fertig in Sekunden</p>
+              </div>
+            </div>
+            <div class="badge-price-pill">
+              <span>14x Boosts = <strong>0,20 €</strong></span>
+            </div>
+          </div>
+
+          <!-- Booster Form Workflow -->
+          <div class="booster-body">
+            
+            <!-- SCHRITT 1: DISCORD INVITE -->
+            <div class="boost-step-card">
+              <div class="boost-step-header">
+                <span class="step-badge-num">1</span>
+                <span class="step-badge-title">DISCORD SERVER INVITE</span>
+              </div>
+              <div class="step-input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <input type="text" id="byotInviteInput" class="modern-input" placeholder="https://discord.gg/dein-server   oder   Invite-Code" autocomplete="off">
+              </div>
+            </div>
+
+            <!-- SCHRITT 2: DEINE TOKENS -->
+            <div class="boost-step-card">
+              <div class="boost-step-header">
+                <div class="step-header-left">
+                  <span class="step-badge-num">2</span>
+                  <span class="step-badge-title">DEINE TOKENS EINFÜGEN</span>
+                </div>
+                <span class="token-counter-badge" id="byotTokenCounter">0 Tokens erkannt</span>
+              </div>
+              <textarea id="byotTokensTextarea" class="modern-textarea" placeholder="Tokens hier einfügen...&#10;Format: token  oder  email:pass:token" oninput="updateTokenCounter()"></textarea>
+              <div class="step-hint">
+                💡 1 Token liefert 2 Boosts. Für 14 Boosts (Level 1/2) benötigst du 7 Tokens.
+              </div>
+            </div>
+
+            <!-- SCHRITT 3: ANZAHL BOOSTS -->
+            <div class="boost-step-card">
+              <div class="boost-step-header">
+                <span class="step-badge-num">3</span>
+                <span class="step-badge-title">ANZAHL BOOSTS WÄHLEN</span>
+              </div>
+              
+              <!-- Quick Boost Packages -->
+              <div class="boost-presets-row">
+                <button type="button" class="boost-preset-btn active" data-num="14" onclick="setBoostsPreset(14)">
+                  <span class="preset-name">14x Boosts</span>
+                  <span class="preset-price">0,20 €</span>
+                </button>
+                <button type="button" class="boost-preset-btn" data-num="28" onclick="setBoostsPreset(28)">
+                  <span class="preset-name">28x Boosts (Level 3)</span>
+                  <span class="preset-price">0,40 €</span>
+                </button>
+                <button type="button" class="boost-preset-btn" data-num="0" onclick="setBoostsPreset(0)">
+                  <span class="preset-name">Alle Tokens nutzen</span>
+                  <span class="preset-price">Dynamisch</span>
+                </button>
+              </div>
+
+              <!-- Stepper -->
+              <div class="stepper-row">
+                <span class="stepper-label">Benötigte Boosts:</span>
+                <div class="stepper-controls">
+                  <button type="button" class="stepper-btn" onclick="stepBoosts(-14)">-</button>
+                  <input type="number" id="byotBoostsCountInput" class="stepper-val-input" value="14" min="0" max="200" step="14" oninput="calculateByotPrice()">
+                  <button type="button" class="stepper-btn" onclick="stepBoosts(14)">+</button>
+                </div>
+                <span class="stepper-note">(0 = Alle eingefügten Tokens aufbrauchen)</span>
+              </div>
+            </div>
+
+            <!-- OPTIONAL: CUSTOM PROFILE / HUMANIZE ACCORDION -->
+            <div class="optional-accordion-wrap">
+              <button type="button" class="accordion-toggle-btn" id="btnToggleProfileDrawer" onclick="toggleProfileDrawer()">
+                <div class="accordion-toggle-left">
+                  <span class="toggle-sparkle">✨</span>
+                  <span>Optional: Bot-Profile anpassen (Bio, Nickname &amp; Avatar)</span>
+                </div>
+                <span class="toggle-chevron" id="accordionChevron">▼</span>
+              </button>
+
+              <div class="profile-drawer-content" id="profileDrawerCard" style="display: none;">
+                <!-- 1-Click Presets -->
+                <div class="presets-container">
+                  <span class="presets-title">Schnellauswahl Presets:</span>
+                  <div class="presets-pills">
+                    <button type="button" class="preset-chip" onclick="applyProfilePreset('gamer')">🎮 Gamer Squad</button>
+                    <button type="button" class="preset-chip" onclick="applyProfilePreset('vip')">👑 VIP Member</button>
+                    <button type="button" class="preset-chip" onclick="applyProfilePreset('anime')">🌸 Aesthetic Anime</button>
+                    <button type="button" class="preset-chip" onclick="applyProfilePreset('sick')">⚡ SICK Booster</button>
+                    <button type="button" class="preset-chip chip-clear" onclick="applyProfilePreset('clear')">🧹 Leeren</button>
+                  </div>
+                </div>
+
+                <div class="custom-profile-grid">
+                  <div class="form-group">
+                    <label class="form-label">Wunsch-Nickname auf dem Server</label>
+                    <input type="text" id="byotNickInput" class="input-field" placeholder="z.B. SICK Booster">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Avatar Bild-URL (Optional)</label>
+                    <input type="text" id="byotAvatarInput" class="input-field" placeholder="https://i.imgur.com/...">
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                  <label class="form-label">Custom Bio / Über mich Text</label>
+                  <textarea id="byotBioTextarea" class="input-field" style="height: 60px; resize: vertical;" placeholder="Bio-Text der Booster-Accounts..."></textarea>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                  <label class="form-label">Banner Bild-URL (Optional)</label>
+                  <input type="text" id="byotBannerInput" class="input-field" placeholder="https://i.imgur.com/...">
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTION BAR / SUBMIT -->
+            <div class="booster-action-section">
+              <div class="cost-summary-row">
+                <div class="cost-item">
+                  <span class="cost-label">Gesamtpreis:</span>
+                  <span class="cost-val" id="displayTotalOrderCost">0,20 €</span>
+                </div>
+                <div class="cost-item">
+                  <span class="cost-label">Verfügbares Guthaben:</span>
+                  <span class="cost-val highlight-balance" id="displayAvailableUserBalance">0,00 €</span>
+                </div>
+              </div>
+
+              <button type="button" class="btn-boost-main glow-btn" id="btnStartByotBoost" onclick="handlePlaceByotOrder()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span id="byotStartBtnText">Jetzt Server Boosten (0,20 €)</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: GUTHABEN AUFLADEN (LTC) ==================== -->
+    <div class="tab-pane" id="paneDeposit" style="display: none;">
+      <div class="single-card-wrap">
+        <div class="card deposit-card invoice-checkout-card" id="deposit-section">
+          
+          <!-- Card Header -->
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble cyan-glow" id="depositHeaderIcon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>
+              </div>
+              <div>
+                <h3 id="depositHeaderTitle">Guthaben aufladen</h3>
+                <p class="card-subtitle" id="depositHeaderSubtitle">Zahle sicher mit Litecoin (LTC) • 100% automatische Gutschrift</p>
+              </div>
+            </div>
+            <div class="badge-price-pill">
+              <span>Mindestens: <strong>0,20 €</strong></span>
+            </div>
+          </div>
+
+          <!-- SCHRITT 1: BETRAG AUSWÄHLEN -->
+          <div id="depositAmountStep" class="deposit-step-container">
+            
+            <!-- Notice if active invoice already exists -->
+            <div id="activeInvoiceNotice" class="active-invoice-notice" style="display: none;">
+              <span class="notice-txt">💡 Du hast eine aktive, offene Rechnung über <strong id="activeNoticeAmount">0,20 €</strong>.</span>
+              <button type="button" class="btn-view-active-inv" onclick="showInvoiceStep()">Rechnung öffnen →</button>
+            </div>
+
+            <!-- Schnellwahl Chips -->
+            <div class="deposit-block">
+              <label class="deposit-section-label">SCHNELLWAHL BETRAG</label>
+              <div class="amount-chips-row" id="amountChipsContainer">
+                <button type="button" class="amount-chip active" data-amt="0.20" onclick="setDepositAmount(0.20, this)">0,20 €</button>
+                <button type="button" class="amount-chip" data-amt="1.00" onclick="setDepositAmount(1.00, this)">1,00 €</button>
+                <button type="button" class="amount-chip" data-amt="2.00" onclick="setDepositAmount(2.00, this)">2,00 €</button>
+                <button type="button" class="amount-chip" data-amt="5.00" onclick="setDepositAmount(5.00, this)">5,00 €</button>
+                <button type="button" class="amount-chip" data-amt="10.00" onclick="setDepositAmount(10.00, this)">10,00 €</button>
+                <button type="button" class="amount-chip" data-amt="25.00" onclick="setDepositAmount(25.00, this)">25,00 €</button>
+              </div>
+            </div>
+
+            <!-- Wunschbetrag Eingabe -->
+            <div class="deposit-block">
+              <label class="deposit-section-label" for="customAmountInput">ODER EIGENEN BETRAG EINGEBEN</label>
+              <div class="hero-amount-box">
+                <span class="hero-currency-prefix">€</span>
+                <input type="number" id="customAmountInput" class="hero-amount-input" value="0.20" min="0.20" step="0.20" placeholder="0.20" oninput="onCustomAmountInput(this.value)" onkeydown="if(event.key==='Enter'){proceedToInvoice();}">
+              </div>
+              
+              <!-- Live LTC Rechner -->
+              <div class="amount-calc-preview" id="amountCalcPreview">
+                <span class="preview-ltc">≈ <strong id="previewLtcAmount">0.00268 LTC</strong></span>
+                <span class="preview-sep">•</span>
+                <span class="preview-fee">0% Gebühren</span>
+                <span class="preview-sep">•</span>
+                <span class="preview-tag">Litecoin Netzwerk</span>
+              </div>
+            </div>
+
+            <!-- Vorteile -->
+            <div class="deposit-perks-box">
+              <div class="perk-row">
+                <span class="perk-icon">⚡</span>
+                <span class="perk-text"><strong>Automatische Blockchain-Erkennung:</strong> Sobald deine Zahlung eintrifft, wird dein Account gutgeschrieben.</span>
+              </div>
+              <div class="perk-row">
+                <span class="perk-icon">🛡️</span>
+                <span class="perk-text"><strong>0% Gebühren:</strong> Der volle Euro-Betrag landet direkt auf deinem Guthaben.</span>
+              </div>
+              <div class="perk-row">
+                <span class="perk-icon">🔒</span>
+                <span class="perk-text"><strong>Anonym &amp; Sicher:</strong> Keine Kreditkarte, kein Ausweis, direkte Überweisung.</span>
+              </div>
+            </div>
+
+            <!-- Proceed Button -->
+            <button type="button" class="btn-proceed-invoice glow-btn" id="btnProceedToInvoice" onclick="proceedToInvoice()">
+              <span class="btn-proceed-icon">⚡</span>
+              <span id="btnProceedText">Litecoin-Zahlung starten</span>
+              <span class="btn-proceed-arrow">→</span>
+            </button>
+          </div>
+
+          <!-- SCHRITT 2: RECHNUNG / INVOICE DISPLAY -->
+          <div id="invoiceActiveContainer" class="invoice-container" style="display: none;">
+            
+            <!-- Top Bar mit Zurück-Button -->
+            <div class="invoice-step-top-bar">
+              <button type="button" class="btn-back-to-amount" onclick="showAmountStep()">
+                <span class="back-arrow">←</span>
+                <span>Anderen Betrag wählen</span>
+              </button>
+              <span class="step-pill-badge">SCHRITT 2 • ZAHLUNG DURCHFÜHREN</span>
+            </div>
+
+            <!-- Status & Countdown -->
+            <div class="invoice-badge-column">
+              <div class="invoice-badge-pill status-waiting" id="invoiceStatusBadge">
+                <span class="invoice-status-dot"></span>
+                <span id="invoiceStatusText">Warte auf Zahlung im Litecoin-Netzwerk...</span>
+              </div>
+              <div class="invoice-badge-pill countdown-pill">
+                <span class="invoice-clock-icon">⏱️</span>
+                <span>Gültig für <strong id="invoiceCountdownText">7h 59m</strong></span>
+              </div>
+            </div>
+
+            <!-- QR Code Zentriert mit Glow -->
+            <div class="invoice-qr-wrapper">
+              <div class="invoice-qr-box">
+                <img id="invoiceQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=litecoin:LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc" alt="LTC Deposit QR Code">
+              </div>
+            </div>
+
+            <!-- Betragsanzeige -->
+            <div class="invoice-receive-section">
+              <div class="invoice-receive-label">DEIN ACCOUNT ERHÄLT EXAKT</div>
+              <div class="invoice-receive-val" id="invoiceReceiveVal">0,20 EUR</div>
+              <div class="invoice-rate-hint" id="invoiceRateHint">Vollautomatische Gutschrift auf deinen Account</div>
+            </div>
+
+            <!-- Wichtiger Hinweis -->
+            <div class="invoice-warning-box">
+              <span class="warning-icon">⚠️</span>
+              <span>Bitte sende den <strong>exakten LTC-Betrag</strong>. Das System erkennt die Zahlung vollautomatisch und bucht das Guthaben sofort auf dein Konto!</span>
+            </div>
+
+            <!-- Feld 1: Exakter LTC Betrag -->
+            <div class="invoice-field-group">
+              <div class="invoice-field-header">
+                <label class="invoice-field-label">1. SENDE EXAKT DIESEN BETRAG</label>
+                <span class="field-pill-badge">LTC BETRAG</span>
+              </div>
+              <div class="invoice-field-box">
+                <span class="invoice-mono-val ltc-highlight" id="invoiceFieldLtc">0.00268142 LTC</span>
+                <button type="button" class="invoice-copy-btn" onclick="copyInvoiceValue('ltc', this)" title="LTC Betrag kopieren">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span class="copy-text">Kopieren</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Feld 2: Offizielle Wallet Adresse -->
+            <div class="invoice-field-group">
+              <div class="invoice-field-header">
+                <label class="invoice-field-label">2. AN DIESE LITECOIN-ADRESSE</label>
+                <span class="field-pill-badge">OFFIZIELLE WALLET</span>
+              </div>
+              <div class="invoice-field-box">
+                <span class="invoice-mono-val" id="invoiceFieldAddress">LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc</span>
+                <button type="button" class="invoice-copy-btn" onclick="copyInvoiceValue('address', this)" title="Adresse kopieren">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span class="copy-text">Kopieren</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Feld 3: Payment Tracking ID -->
+            <div class="invoice-field-group">
+              <div class="invoice-field-header">
+                <label class="invoice-field-label">3. TRACKING-ID (ZUR SICHERHEIT)</label>
+                <span class="field-pill-badge">TRACKING ID</span>
+              </div>
+              <div class="invoice-field-box">
+                <span class="invoice-mono-val" id="invoiceFieldPaymentId">5784378544</span>
+                <button type="button" class="invoice-copy-btn" onclick="copyInvoiceValue('payment_id', this)" title="Tracking ID kopieren">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span class="copy-text">Kopieren</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Refresh Button -->
+            <div class="invoice-actions">
+              <button type="button" class="invoice-btn-refresh glow-btn" id="btnInvoiceRefresh" onclick="handleRefreshInvoiceStatus()">
+                <span class="btn-refresh-icon">🔄</span>
+                <span id="btnInvoiceRefreshText">Status prüfen (Auto-Erkennung aktiv)</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: BESTELLUNGEN ==================== -->
+    <div class="tab-pane" id="paneOrders" style="display: none;">
+      <div class="single-card-wrap wide">
+        <section class="card orders-section" id="orders-section">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble cyan-glow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </div>
+              <div>
+                <h3>Deine Boost-Bestellungen</h3>
+                <p class="card-subtitle">Echtzeit-Verlauf deiner durchgeführten Discord Server Boosts</p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="loadUserOrders()">🔄 Aktualisieren</button>
+          </div>
+
+          <div class="card-body">
+            <div class="orders-table-wrapper">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Bestellung #</th>
+                    <th>Modus</th>
+                    <th>Server Invite</th>
+                    <th>Boosts / Tokens</th>
+                    <th>Preis</th>
+                    <th>Status</th>
+                    <th>Task ID</th>
+                    <th>Uhrzeit</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <tr>
+                    <td colspan="8" class="table-empty-msg">Noch keine Bestellungen aufgegeben.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== USER PROFILE MODAL ==================== -->
+  <div class="modal-overlay" id="profileModalOverlay" onclick="closeProfileModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+      
+      <div class="profile-modal-header">
+        <img src="/static/assets/sick_logo.jpg" class="profile-avatar-preview" alt="User Avatar">
+        <div>
+          <h3 id="profileModalUsername">Benutzername</h3>
+          <p class="card-subtitle" id="profileModalBalance">Guthaben: 0.00 €</p>
+        </div>
+      </div>
+
+      <!-- API Key Box -->
+      <div class="form-group" style="margin-top: 15px;">
+        <label class="form-label">SICK Member API Key</label>
+        <div class="webhook-box-group">
+          <input type="text" id="profileApiKeyInput" class="webhook-url-input" readonly value="">
+          <button class="btn btn-secondary" onclick="copyProfileApiKey()">Kopieren</button>
+          <button class="btn btn-outline" onclick="handleRegenerateKey()" title="Neuen Key generieren">🔄</button>
+        </div>
+      </div>
+
+      <!-- Change Password -->
+      <div class="profile-password-box">
+        <h4 style="font-size: 0.88rem; color: #38bdf8; margin-bottom: 10px;">🔐 Passwort ändern</h4>
+        <form onsubmit="handleChangePassword(event)">
+          <div class="form-group">
+            <input type="password" id="currentPassInput" class="input-field" placeholder="Aktuelles Passwort" required autocomplete="current-password">
+          </div>
+          <div class="form-group">
+            <input type="password" id="newPassInput" class="input-field" placeholder="Neues Passwort (min. 4 Zeichen)" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn btn-secondary btn-block" id="btnSubmitPassChange">Passwort aktualisieren</button>
+        </form>
+      </div>
+
+      <div style="margin-top: 20px; border-top: 1px solid var(--border-subtle); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="https://discord.gg/NitroHQ" target="_blank" class="footer-link" style="color: #38bdf8; font-size: 0.82rem;">💬 Official Discord: gg/NitroHQ</a>
+        <button class="btn btn-sm btn-outline" onclick="handleLogout()">Abmelden</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== AUTH MODAL (SIGN IN / REGISTER) ==================== -->
+  <div class="modal-overlay" id="authModalOverlay" onclick="closeAuthModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      
+      <div class="modal-tabs">
+        <button class="modal-tab active" id="tabLoginBtn" onclick="switchAuthTab('login')">Anmelden</button>
+        <button class="modal-tab" id="tabRegisterBtn" onclick="switchAuthTab('register')">Registrieren</button>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Benutzername</label>
+          <input type="text" id="authUsernameInput" class="input-field" placeholder="Benutzername" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Passwort</label>
+          <input type="password" id="authPasswordInput" class="input-field" placeholder="Passwort" required autocomplete="current-password">
+        </div>
+
+        <div class="modal-error" id="authErrorMsg"></div>
+
+        <button type="submit" class="btn btn-primary btn-block glow-btn" id="authSubmitBtn">
+          Anmelden
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATIONS ==================== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <p>SICK ⚡ Gaming &amp; Nitro Marketplace • Powered by SICK Cloud Engine &amp; Litecoin</p>
+      </div>
+      <div class="footer-right">
+        <span>Wallet: <code>LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc</code></span>
+        <span>•</span>
+        <a href="https://discord.gg/NitroHQ" target="_blank" class="footer-link">Official Discord (gg/NitroHQ)</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

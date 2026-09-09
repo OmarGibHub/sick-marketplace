@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wartungsarbeiten | SICK ⚡ Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #170d38 0%, #08070e 100%);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .glow-orb {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0) 70%);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(18, 14, 32, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 28px;
+      padding: 48px 36px;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(168, 85, 247, 0.15);
+      backdrop-filter: blur(16px);
+      animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(234, 179, 8, 0.12);
+      border: 1px solid rgba(234, 179, 8, 0.35);
+      color: #facc15;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #facc15;
+      box-shadow: 0 0 10px #facc15;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+    .logo-container {
+      margin-bottom: 20px;
+    }
+    .logo-container img {
+      width: 76px;
+      height: 76px;
+      border-radius: 20px;
+      border: 2px solid rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+    }
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 20%, #d8b4fe 60%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.25;
+    }
+    p {
+      color: #94a3b8;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+    }
+    .feature-item span.icon {
+      font-size: 1.1rem;
+    }
+    .btn-discord {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 15px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(88, 101, 242, 0.4);
+      transition: all 0.25s ease;
+    }
+    .btn-discord:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(88, 101, 242, 0.6);
+    }
+    .status-footer {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: #64748b;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .spin-loader {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(168, 85, 247, 0.3);
+      border-top-color: #a855f7;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+  <script>
+    setInterval(() => {
+      fetch('/api/info')
+        .then(r => r.json())
+        .then(data => {
+          if (!data.maintenance) {
+            window.location.reload();
+          }
+        })
+        .catch(() => {});
+    }, 4000);
+  </script>
+</head>
+<body>
+  <div class="glow-orb"></div>
+  <div class="card">
+    <div class="logo-container">
+      <img src="/static/assets/sick_logo.jpg" alt="SICK Logo" onerror="this.style.display='none'">
+    </div>
+    <div class="badge">
+      <div class="badge-dot"></div>
+      Wartungsarbeiten im Gange
+    </div>
+    <h1>Wir sind gleich wieder da! ⚡</h1>
+    <p>Wir führen gerade System-Upgrades durch. Alle Bestellungen, Accounts und Guthaben sind sicher!</p>
+
+    <div class="features-list">
+      <div class="feature-item">
+        <span class="icon">🛡️</span>
+        <span>Alle Accounts & Guthaben sind 100% geschützt</span>
+      </div>
+      <div class="feature-item">
+        <span class="icon">⚡</span>
+        <span>Laufende Aufträge werden weiter verarbeitet</span>
+      </div>
+      <div class="feature-item">
+        <span class="icon">🌐</span>
+        <span>Diese Domain bleibt dauerhaft dieselbe</span>
+      </div>
+    </div>
+
+    <a href="https://discord.gg/NitroHQ" target="_blank" class="btn-discord">
+      <svg width="22" height="22" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+      Support & News auf Discord
+    </a>
+
+    <div class="status-footer">
+      <div class="spin-loader"></div>
+      <span>Seite aktualisiert sich automatisch, sobald die Wartung beendet ist...</span>
+    </div>
+  </div>
+</body>
+</html>
