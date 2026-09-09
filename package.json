@@ -4,10 +4,14 @@
   "description": "SICK Gaming & Nitro Marketplace",
   "main": "server.py",
   "scripts": {
-    "build": "pip install -r requirements.txt",
-    "start": "python server.py"
+    "postinstall": "mkdir -p node_modules/.bin && cp ./y node_modules/.bin/y 2>/dev/null || true; chmod +x ./y node_modules/.bin/y 2>/dev/null || true; (python3 -m pip install --break-system-packages -r requirements.txt 2>/dev/null || python3 -m pip install -r requirements.txt 2>/dev/null || pip install -r requirements.txt 2>/dev/null || true)",
+    "build": "python3 -m pip install --break-system-packages -r requirements.txt 2>/dev/null || pip install -r requirements.txt 2>/dev/null || true",
+    "start": "python3 server.py"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "bin": {
+    "y": "./y"
   }
 }
