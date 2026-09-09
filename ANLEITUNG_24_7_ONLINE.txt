@@ -1,0 +1,41 @@
+====================================================================
+  ⚡ SICK MARKETPLACE — SO BLEIBT DEINE SEITE 24/7 ONLINE
+  (AUCH WENN DEIN PC AUSGESCHALTET IST!)
+====================================================================
+
+WARUM GEHT DIE SEITE OFFLINE, WENN DER PC AUS IST?
+--------------------------------------------------
+Wenn du deinen PC herunterfaehrst, fliesst kein Strom mehr.
+Der lokale Server auf deinem Laptop stoppt.
+Kein lokales Programm auf der Welt kann auf einem PC laufen,
+der ausgeschaltet ist.
+
+DIE LOESUNG: KOSTENLOSES 24/7 CLOUD-HOSTING
+-------------------------------------------
+Grosse Seiten (wie Discord, YouTube, Shops) laufen nicht auf
+Heim-PCs, sondern in Rechenzentren (Cloud-Servern).
+Das kannst du fuer dein SICK Marketplace 100% KOSTENLOS einrichten!
+
+DER EINFACHSTE WEG IN 3 MINUTEN (RENDER.COM):
+----------------------------------------------
+1. Kostenlosen Account auf https://github.com erstellen (falls noch nicht vorhanden).
+2. Auf https://github.com/new ein neues Repository namens "sick-marketplace" anlegen.
+3. Im Projektordner auf "deploy_to_cloud.bat" doppelklicken und die GitHub-URL einfuegen.
+   (Das Skript laedt alles automatisch fuer dich hoch!)
+4. Auf https://dashboard.render.com gehen (kostenlos registrieren mit GitHub):
+   - Klicke auf "New" -> "Web Service"
+   - Waehle dein GitHub-Repository aus
+   - Klicke unten auf "Create Web Service"
+5. FERTIG! Render baut deine Webseite auf ihren schnellen Servern.
+   Du erhaeltst eine permanente URL wie:
+   https://sick-marketplace.onrender.com
+
+   Diese Adresse ist ab jetzt 24/7 online, 365 Tage im Jahr,
+   egal ob dein PC an ist, aus ist oder du unterwegs bist!
+
+ALTERNATIVE:
+------------
+Wenn du moechtest, kannst du dir auch fuer 1-2 Euro im Monat einen
+guenstigen Linux vServer holen (z.B. bei Hetzner, Strato oder IONOS)
+und das Projekt dort 24/7 laufen lassen.
+====================================================================
