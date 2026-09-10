@@ -30,13 +30,12 @@
         <button type="button" class="nav-link active" id="navLinkBoost" onclick="switchMainTab('boost')">⚡ Boost Server</button>
         <button type="button" class="nav-link" id="navLinkDeposit" onclick="switchMainTab('deposit')">💳 Top Up Balance</button>
         <button type="button" class="nav-link" id="navLinkOrders" onclick="switchMainTab('orders')">📜 My Orders</button>
-        <button type="button" class="nav-link" id="navLinkAdmin" onclick="openAdminModal()" style="color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px;">👑 Admin</button>
+        <button type="button" class="nav-link" id="navLinkAdmin" onclick="openAdminModal()" style="display: none; color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px;">👑 Admin</button>
         <a href="https://discord.gg/NitroHQ" target="_blank" class="nav-link dc-link">💬 Discord (gg/NitroHQ)</a>
       </nav>
 
       <!-- User or Sign In Buttons -->
       <div class="nav-auth" id="navAuthContainer">
-        <button class="btn btn-sm btn-outline" style="color: #f59e0b; border-color: rgba(245,158,11,0.5);" onclick="openAdminModal()">👑 Admin</button>
         <button class="btn btn-outline" onclick="openAuthModal('login')">Sign In</button>
         <button class="btn btn-primary glow-btn" onclick="openAuthModal('register')">Get Started</button>
       </div>

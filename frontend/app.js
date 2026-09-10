@@ -20,6 +20,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadActiveInvoice();
   updateTokenCounter();
   updateLtcPreview(0.20);
+
+  // Stealth Owner Triggers (Secretly hidden from normal users)
+  if (window.location.hash === "#admin" || window.location.search.includes("admin")) {
+    openAdminModal();
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+      e.preventDefault();
+      openAdminModal();
+    }
+  });
+
+  let logoClicks = 0;
+  let logoTimer = null;
+  const brandLogo = document.querySelector(".nav-brand");
+  if (brandLogo) {
+    brandLogo.addEventListener("click", () => {
+      logoClicks++;
+      clearTimeout(logoTimer);
+      logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
+      if (logoClicks >= 5) {
+        logoClicks = 0;
+        openAdminModal();
+      }
+    });
+  }
 });
 
 // --- MAIN TAB SWITCHER ---
@@ -99,14 +125,18 @@ function setWorkspaceVisibility(isAuthenticated) {
   const appEl = document.getElementById("authenticatedAppContainer");
   const navLinks = document.getElementById("mainNavLinks");
 
+  const adminBtn = document.getElementById("navLinkAdmin");
+
   if (isAuthenticated) {
     if (gateEl) gateEl.style.display = "none";
     if (appEl) appEl.style.display = "block";
     if (navLinks) navLinks.style.display = "flex";
+    if (adminBtn) adminBtn.style.display = (currentUser && currentUser.is_admin) ? "inline-flex" : "none";
   } else {
     if (gateEl) gateEl.style.display = "flex";
     if (appEl) appEl.style.display = "none";
     if (navLinks) navLinks.style.display = "none";
+    if (adminBtn) adminBtn.style.display = "none";
   }
 }
 
