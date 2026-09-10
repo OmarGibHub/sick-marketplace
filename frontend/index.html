@@ -30,11 +30,13 @@
         <button type="button" class="nav-link active" id="navLinkBoost" onclick="switchMainTab('boost')">⚡ Boost Server</button>
         <button type="button" class="nav-link" id="navLinkDeposit" onclick="switchMainTab('deposit')">💳 Top Up Balance</button>
         <button type="button" class="nav-link" id="navLinkOrders" onclick="switchMainTab('orders')">📜 My Orders</button>
+        <button type="button" class="nav-link" id="navLinkAdmin" onclick="openAdminModal()" style="color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px;">👑 Admin</button>
         <a href="https://discord.gg/NitroHQ" target="_blank" class="nav-link dc-link">💬 Discord (gg/NitroHQ)</a>
       </nav>
 
       <!-- User or Sign In Buttons -->
       <div class="nav-auth" id="navAuthContainer">
+        <button class="btn btn-sm btn-outline" style="color: #f59e0b; border-color: rgba(245,158,11,0.5);" onclick="openAdminModal()">👑 Admin</button>
         <button class="btn btn-outline" onclick="openAuthModal('login')">Sign In</button>
         <button class="btn btn-primary glow-btn" onclick="openAuthModal('register')">Get Started</button>
       </div>
@@ -609,6 +611,87 @@
           Sign In
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN CONTROL MODAL ==================== -->
+  <div class="modal-overlay" id="adminModalOverlay" style="display: none;" onclick="closeAdminModal(event)">
+    <div class="modal-card" style="max-width: 540px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeAdminModal()">&times;</button>
+      
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+        <span style="font-size: 1.8rem;">👑</span>
+        <div>
+          <h3 style="margin: 0; color: #fff; font-size: 1.25rem;">SICK Admin Control Panel</h3>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8;">Instantly grant balances, manage users &amp; configure Discord webhooks</p>
+        </div>
+      </div>
+
+      <!-- Admin Secret Key -->
+      <div class="form-group">
+        <label class="form-label" style="display: flex; justify-content: space-between;">
+          <span>Admin Secret Key</span>
+          <span style="font-size: 0.75rem; color: #10b981;">(Default: sick_admin_pass)</span>
+        </label>
+        <input type="password" id="adminSecretInput" class="input-field" placeholder="Enter sick_admin_pass" value="sick_admin_pass">
+      </div>
+
+      <!-- Section: Balance Manager -->
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <h4 style="margin: 0 0 10px 0; color: #00E5FF; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+          <span>💳</span> Give / Set Balance
+        </h4>
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label class="form-label">Username</label>
+          <input type="text" id="adminBalanceUsername" class="input-field" placeholder="e.g. Wlopgaming" value="Wlopgaming">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Amount in EUR (€)</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="number" step="0.01" id="adminBalanceAmount" class="input-field" placeholder="0.20" value="0.20" style="flex: 1;">
+            <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('adminBalanceAmount').value='0.20'">+0.20 € (14x)</button>
+            <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('adminBalanceAmount').value='0.50'">+0.50 €</button>
+            <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('adminBalanceAmount').value='1.00'">+1.00 €</button>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-primary glow-btn" style="flex: 1;" onclick="submitAdminBalance('set')">
+            ⚡ Set Exact Balance
+          </button>
+          <button type="button" class="btn btn-outline" style="flex: 1;" onclick="submitAdminBalance('add')">
+            + Add To Balance
+          </button>
+        </div>
+        <div id="adminBalanceResult" style="margin-top: 8px; font-size: 0.85rem; display: none; padding: 8px; border-radius: 6px;"></div>
+      </div>
+
+      <!-- Section: Discord Webhook -->
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <h4 style="margin: 0 0 10px 0; color: #8B5CF6; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+          <span>🔔</span> Discord Log Webhook
+        </h4>
+        <div class="form-group" style="margin-bottom: 8px;">
+          <input type="text" id="adminWebhookUrl" class="input-field" placeholder="https://discord.com/api/webhooks/..." value="https://discord.com/api/webhooks/1547227892742750269/BYU67OPDjuRN_wLdNjbWIdxPXX8Q30fNa8V46izw51ojOjFl-FogPOLLEb0DCTPRTPA-">
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-primary" style="flex: 1;" onclick="submitAdminWebhook()">
+            💾 Save Webhook
+          </button>
+          <button type="button" class="btn btn-outline" style="flex: 1;" onclick="testAdminWebhook()">
+            🔔 Send Test Alert
+          </button>
+        </div>
+        <div id="adminWebhookResult" style="margin-top: 8px; font-size: 0.85rem; display: none; padding: 8px; border-radius: 6px;"></div>
+      </div>
+
+      <!-- Section: User List -->
+      <div>
+        <button type="button" class="btn btn-sm btn-outline btn-block" onclick="loadAdminUsers()">
+          👥 Refresh Users &amp; Balances List
+        </button>
+        <div id="adminUsersListContainer" style="margin-top: 10px; max-height: 160px; overflow-y: auto; font-size: 0.85rem; display: none;"></div>
+      </div>
+
     </div>
   </div>
 

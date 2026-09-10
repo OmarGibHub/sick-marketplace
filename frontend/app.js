@@ -1088,3 +1088,186 @@ function escapeHtml(str) {
     tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
   );
 }
+
+// ==========================================================================
+// 👑 SICK ADMIN CONTROL PANEL FUNCTIONS
+// ==========================================================================
+
+function openAdminModal() {
+  const modal = document.getElementById("adminModalOverlay");
+  if (modal) {
+    modal.style.display = "flex";
+    const savedSecret = localStorage.getItem("sick_admin_secret");
+    if (savedSecret) {
+      const input = document.getElementById("adminSecretInput");
+      if (input) input.value = savedSecret;
+    }
+  }
+}
+
+function closeAdminModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const modal = document.getElementById("adminModalOverlay");
+  if (modal) modal.style.display = "none";
+}
+
+async function submitAdminBalance(mode = "set") {
+  const secret = document.getElementById("adminSecretInput").value.trim() || "sick_admin_pass";
+  const username = document.getElementById("adminBalanceUsername").value.trim();
+  const amount = parseFloat(document.getElementById("adminBalanceAmount").value);
+  const resBox = document.getElementById("adminBalanceResult");
+
+  if (!username) {
+    showToast("Please enter a username", "error");
+    return;
+  }
+  if (isNaN(amount)) {
+    showToast("Please enter a valid amount", "error");
+    return;
+  }
+
+  localStorage.setItem("sick_admin_secret", secret);
+  resBox.style.display = "block";
+  resBox.style.background = "rgba(0, 229, 255, 0.1)";
+  resBox.style.color = "#00E5FF";
+  resBox.textContent = "Updating balance...";
+
+  try {
+    const res = await fetch("/api/admin/set_balance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ admin_secret: secret, username, amount_eur: amount, mode })
+    });
+    const data = await res.json();
+    if (data.success) {
+      resBox.style.background = "rgba(16, 185, 129, 0.15)";
+      resBox.style.color = "#10B981";
+      resBox.textContent = `✅ Success: ${data.message} (New Balance: ${data.new_balance.toFixed(2)} €)`;
+      showToast(`Balance updated: ${data.username} = ${data.new_balance.toFixed(2)} €`, "success");
+      if (currentUser && currentUser.username.toLowerCase() === username.toLowerCase()) {
+        currentUser.balance_eur = data.new_balance;
+        updateBalanceDisplays(data.new_balance);
+      }
+      loadAdminUsers();
+    } else {
+      resBox.style.background = "rgba(239, 68, 68, 0.15)";
+      resBox.style.color = "#EF4444";
+      resBox.textContent = `❌ Error: ${data.message}`;
+      showToast(data.message, "error");
+    }
+  } catch (err) {
+    resBox.style.color = "#EF4444";
+    resBox.textContent = "Network error updating balance.";
+  }
+}
+
+async function submitAdminWebhook() {
+  const secret = document.getElementById("adminSecretInput").value.trim() || "sick_admin_pass";
+  const webhookUrl = document.getElementById("adminWebhookUrl").value.trim();
+  const resBox = document.getElementById("adminWebhookResult");
+
+  if (!webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
+    showToast("Invalid Discord Webhook URL", "error");
+    return;
+  }
+
+  localStorage.setItem("sick_admin_secret", secret);
+  resBox.style.display = "block";
+  resBox.style.background = "rgba(139, 92, 246, 0.1)";
+  resBox.style.color = "#8B5CF6";
+  resBox.textContent = "Saving and testing webhook...";
+
+  try {
+    const res = await fetch("/api/admin/set_webhook", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ admin_secret: secret, webhook_url: webhookUrl })
+    });
+    const data = await res.json();
+    if (data.success) {
+      resBox.style.background = "rgba(16, 185, 129, 0.15)";
+      resBox.style.color = "#10B981";
+      resBox.textContent = `✅ ${data.message}`;
+      showToast("Discord webhook updated successfully!", "success");
+    } else {
+      resBox.style.background = "rgba(239, 68, 68, 0.15)";
+      resBox.style.color = "#EF4444";
+      resBox.textContent = `❌ ${data.message}`;
+      showToast(data.message, "error");
+    }
+  } catch (err) {
+    resBox.style.color = "#EF4444";
+    resBox.textContent = "Network error saving webhook.";
+  }
+}
+
+async function testAdminWebhook() {
+  const resBox = document.getElementById("adminWebhookResult");
+  resBox.style.display = "block";
+  resBox.style.background = "rgba(0, 229, 255, 0.1)";
+  resBox.style.color = "#00E5FF";
+  resBox.textContent = "Sending test alert to Discord...";
+
+  try {
+    const res = await fetch("/api/test_webhook");
+    const data = await res.json();
+    if (data.success) {
+      resBox.style.background = "rgba(16, 185, 129, 0.15)";
+      resBox.style.color = "#10B981";
+      resBox.textContent = "✅ Test embed sent! Check your Discord channel.";
+      showToast("Test alert sent to Discord!", "success");
+    } else {
+      resBox.style.color = "#EF4444";
+      resBox.textContent = "Failed to dispatch test alert.";
+    }
+  } catch (err) {
+    resBox.style.color = "#EF4444";
+    resBox.textContent = "Error communicating with server.";
+  }
+}
+
+async function loadAdminUsers() {
+  const secret = document.getElementById("adminSecretInput").value.trim() || "sick_admin_pass";
+  const container = document.getElementById("adminUsersListContainer");
+  container.style.display = "block";
+  container.innerHTML = "<p style='color:var(--text-dim);'>Loading users...</p>";
+
+  try {
+    const res = await fetch(`/api/admin/users?secret=${encodeURIComponent(secret)}`);
+    const data = await res.json();
+    if (data.success && data.users) {
+      if (data.users.length === 0) {
+        container.innerHTML = "<p style='color:var(--text-dim);'>No users registered yet.</p>";
+        return;
+      }
+      container.innerHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; color: #94a3b8;">
+              <th style="padding: 4px;">User</th>
+              <th style="padding: 4px;">Balance</th>
+              <th style="padding: 4px; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.users.map(u => `
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 6px 4px;"><strong>${escapeHtml(u.username)}</strong></td>
+                <td style="padding: 6px 4px; color: #10b981; font-weight: 600;">${parseFloat(u.balance_eur).toFixed(2)} €</td>
+                <td style="padding: 6px 4px; text-align: right;">
+                  <button type="button" class="btn btn-sm btn-outline" style="padding: 2px 8px; font-size: 0.75rem;" onclick="document.getElementById('adminBalanceUsername').value='${escapeHtml(u.username)}'; document.getElementById('adminBalanceAmount').value='0.20'; submitAdminBalance('set');">
+                    Set 0.20 €
+                  </button>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    } else {
+      container.innerHTML = `<p style='color:#ef4444;'>Failed to load users: ${data.message || "Unauthorized"}</p>`;
+    }
+  } catch (err) {
+    container.innerHTML = "<p style='color:#ef4444;'>Error loading users.</p>";
+  }
+}

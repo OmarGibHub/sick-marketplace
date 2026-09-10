@@ -168,7 +168,14 @@ def create_user(username: str, password: str, is_admin: bool = False) -> Tuple[b
 def authenticate_user(username: str, password: str) -> Tuple[bool, str, Optional[Dict[str, Any]]]:
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username.strip(),))
+        uname = username.strip()
+        cursor.execute("""
+            SELECT * FROM users 
+            WHERE LOWER(username) = LOWER(?) 
+               OR LOWER(username) = LOWER(?) || '@gmail.com'
+               OR REPLACE(LOWER(username), '@gmail.com', '') = LOWER(?)
+            ORDER BY id DESC LIMIT 1
+        """, (uname, uname, uname))
         row = cursor.fetchone()
         if not row:
             return False, "User does not exist.", None
@@ -322,6 +329,50 @@ def adjust_user_balance(user_id: int, delta_eur: float) -> Tuple[bool, float]:
         cursor.execute("UPDATE users SET balance_eur = ? WHERE id = ?", (new_balance, user_id))
         conn.commit()
         return True, new_balance
+
+def set_or_add_user_balance(username: str, amount_eur: float, mode: str = "set") -> Tuple[bool, str, float]:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        uname = username.strip()
+        cursor.execute("""
+            SELECT id, username, balance_eur FROM users 
+            WHERE LOWER(username) = LOWER(?) 
+               OR LOWER(username) = LOWER(?) || '@gmail.com'
+               OR REPLACE(LOWER(username), '@gmail.com', '') = LOWER(?)
+            ORDER BY id DESC LIMIT 1
+        """, (uname, uname, uname))
+        row = cursor.fetchone()
+        
+        amount = float(amount_eur)
+        if not row:
+            import hashlib, secrets, time
+            p_salt = secrets.token_hex(16)
+            p_hash = hashlib.sha256(('Password123!' + p_salt).encode('utf-8')).hexdigest()
+            api_key = 'pb_' + secrets.token_hex(16)
+            new_bal = round(max(0.0, amount), 2)
+            cursor.execute("""
+                INSERT INTO users (username, password_hash, salt, balance_eur, api_key, is_admin, created_at)
+                VALUES (?, ?, ?, ?, ?, 0, ?)
+            """, (uname, p_hash, p_salt, new_bal, api_key, int(time.time())))
+            conn.commit()
+            return True, f"User '{uname}' created and credited with {new_bal:.2f} €.", new_bal
+            
+        current = float(row["balance_eur"])
+        if mode == "add":
+            new_bal = round(current + amount, 2)
+        else:
+            new_bal = round(amount, 2)
+            
+        new_bal = max(0.0, new_bal)
+        cursor.execute("UPDATE users SET balance_eur = ? WHERE id = ?", (new_bal, row["id"]))
+        conn.commit()
+        return True, f"User '{row['username']}' balance updated to {new_bal:.2f} €.", new_bal
+
+def get_all_users_admin(limit: int = 100) -> List[Dict[str, Any]]:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, username, balance_eur, is_admin, created_at FROM users ORDER BY id DESC LIMIT ?", (limit,))
+        return [dict(r) for r in cursor.fetchall()]
 
 # --- Order Operations ---
 

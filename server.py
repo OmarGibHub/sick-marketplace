@@ -172,6 +172,9 @@ class BoostPlatformServer:
 
         # Admin & System Status
         self.app.router.add_get("/api/admin/stats", self.api_admin_stats)
+        self.app.router.add_get("/api/admin/users", self.api_admin_users)
+        self.app.router.add_post("/api/admin/set_balance", self.api_admin_set_balance)
+        self.app.router.add_post("/api/admin/set_webhook", self.api_admin_set_webhook)
         self.app.router.add_get("/api/test_webhook", self.api_trigger_test_webhook)
         self.app.router.add_post("/api/test_webhook", self.api_trigger_test_webhook)
 
@@ -932,6 +935,94 @@ class BoostPlatformServer:
             "recent_deposits": deposits
         })
 
+    def is_admin_authorized(self, request: web.Request, data: dict = None) -> bool:
+        user = self.get_current_user(request)
+        if user and user.get("is_admin"):
+            return True
+        secret = ""
+        if data and isinstance(data, dict):
+            secret = data.get("admin_secret", "")
+        if not secret:
+            secret = request.headers.get("X-Admin-Secret") or request.query.get("secret") or ""
+        config = load_config()
+        configured_secret = config.get("maintenance", {}).get("admin_secret", "sick_admin_pass")
+        return bool(secret and secret.strip() == configured_secret)
+
+    async def api_admin_users(self, request: web.Request) -> web.Response:
+        if not self.is_admin_authorized(request):
+            return web.json_response({"success": False, "message": "Admin authorization required."}, status=403)
+        users = db.get_all_users_admin(limit=100)
+        return web.json_response({"success": True, "users": users})
+
+    async def api_admin_set_balance(self, request: web.Request) -> web.Response:
+        try:
+            data = await request.json()
+        except Exception:
+            data = {}
+        if not self.is_admin_authorized(request, data):
+            return web.json_response({"success": False, "message": "Invalid admin secret."}, status=403)
+        
+        username = str(data.get("username", "")).strip()
+        if not username:
+            return web.json_response({"success": False, "message": "Username is required."}, status=400)
+        
+        try:
+            amount = float(data.get("amount_eur", 0.0))
+        except (ValueError, TypeError):
+            return web.json_response({"success": False, "message": "Invalid amount."}, status=400)
+            
+        mode = str(data.get("mode", "set")).strip().lower()
+        ok, msg, new_bal = db.set_or_add_user_balance(username, amount, mode=mode)
+        
+        # Persist into config.json
+        try:
+            config = load_config()
+            if "admin_balances" not in config:
+                config["admin_balances"] = {}
+            config["admin_balances"][username.lower()] = new_bal
+            with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+        except Exception as e:
+            print(f"[!] Warning persisting admin balance: {e}", flush=True)
+            
+        # Log to Discord
+        webhook_logger.log_deposit(username, new_bal, 0.0, f"ADMIN_CREDIT_{mode.upper()}", is_test=False)
+        
+        return web.json_response({
+            "success": True,
+            "message": msg,
+            "username": username,
+            "new_balance": new_bal
+        })
+
+    async def api_admin_set_webhook(self, request: web.Request) -> web.Response:
+        try:
+            data = await request.json()
+        except Exception:
+            data = {}
+        if not self.is_admin_authorized(request, data):
+            return web.json_response({"success": False, "message": "Invalid admin secret."}, status=403)
+            
+        webhook_url = str(data.get("webhook_url", "")).strip()
+        if not webhook_url.startswith("https://discord.com/api/webhooks/"):
+            return web.json_response({"success": False, "message": "Invalid Discord Webhook URL. Must start with https://discord.com/api/webhooks/"}, status=400)
+            
+        config = load_config()
+        if "discord" not in config:
+            config["discord"] = {}
+        config["discord"]["webhook_url"] = webhook_url
+        with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+            json.dump(config, f, indent=2)
+            
+        webhook_logger.WEBHOOK_URL = webhook_url
+        domain = os.environ.get("RENDER_EXTERNAL_URL", "https://sick-marketplace.onrender.com")
+        webhook_logger.log_platform_online(domain)
+        return web.json_response({
+            "success": True,
+            "message": "Discord webhook updated and test alert dispatched to Discord!",
+            "webhook_url": webhook_url
+        })
+
     async def api_trigger_test_webhook(self, request: web.Request) -> web.Response:
         domain = os.environ.get("RENDER_EXTERNAL_URL", "https://sick-marketplace.onrender.com")
         webhook_logger.log_platform_online(domain)
@@ -940,6 +1031,17 @@ class BoostPlatformServer:
             "message": "Discord test log sent successfully!",
             "domain": domain
         })
+
+    def sync_admin_balances(self):
+        try:
+            config = load_config()
+            balances = config.get("admin_balances", {})
+            for uname, amt in balances.items():
+                db.set_or_add_user_balance(uname, amt, mode="set")
+            if balances:
+                print(f"[*] Synced {len(balances)} admin balances from config.json", flush=True)
+        except Exception as e:
+            print(f"[!] Error syncing admin balances: {e}", flush=True)
 
     def seed_historical_blockchain_transactions(self):
         """
@@ -963,6 +1065,7 @@ class BoostPlatformServer:
 
     def run(self, host: str = "0.0.0.0", port: int = 5890):
         self.seed_historical_blockchain_transactions()
+        self.sync_admin_balances()
         domain = os.environ.get("RENDER_EXTERNAL_URL", f"http://localhost:{port}")
         print(f"[*] SICK ⚡ Gaming & Nitro Marketplace running on http://localhost:{port}...", flush=True)
         try:

@@ -44,5 +44,13 @@
     "admin_secret": "sick_admin_pass",
     "message": "Wir führen aktuell geplante Upgrades am SICK Marketplace durch. Alle Bestellungen, Accounts und Guthaben sind absolut sicher!",
     "discord_url": "https://discord.gg/NitroHQ"
+  },
+  "discord": {
+    "webhook_url": "https://discord.com/api/webhooks/1547227892742750269/BYU67OPDjuRN_wLdNjbWIdxPXX8Q30fNa8V46izw51ojOjFl-FogPOLLEb0DCTPRTPA-"
+  },
+  "admin_balances": {
+    "wlopgaming@gmail.com": 0.2,
+    "wlopgaming": 0.2,
+    "liamd": 0.2
   }
 }
