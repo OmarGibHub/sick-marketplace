@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚡ SICK GAMING & NITRO MARKETPLACE — FRONTEND ENGINE 4.0 (ENGLISH)
+// ⚡ 12b00 GAMING & NITRO MARKETPLACE — FRONTEND ENGINE 4.0 (ENGLISH)
 // Simplified, modern tabbed workspace & automated Litecoin fulfillment
 // ==========================================================================
 
@@ -231,7 +231,7 @@ async function handleGateAuthSubmit(event) {
       setWorkspaceVisibility(true);
       renderNavUser();
       calculateByotPrice();
-      showToast(activeGateMode === "register" ? "Account created successfully! Welcome to SICK." : `Welcome back, ${currentUser.username}!`, "success");
+      showToast(activeGateMode === "register" ? "Account created successfully! Welcome to 12b00." : `Welcome back, ${currentUser.username}!`, "success");
       await loadUserOrders();
       
       startOrderPolling();
@@ -321,7 +321,7 @@ async function handleAuthSubmit(event) {
       renderNavUser();
       calculateByotPrice();
       closeAuthModal();
-      showToast(activeAuthMode === "register" ? "Account created successfully! Welcome to SICK." : `Welcome back, ${currentUser.username}!`, "success");
+      showToast(activeAuthMode === "register" ? "Account created successfully! Welcome to 12b00." : `Welcome back, ${currentUser.username}!`, "success");
       await loadUserOrders();
       
       startOrderPolling();
@@ -384,7 +384,7 @@ function copyProfileApiKey() {
   const input = document.getElementById("profileApiKeyInput");
   if (!input || !input.value) return;
   navigator.clipboard.writeText(input.value).then(() => {
-    showToast("SICK API Key copied to clipboard!", "success");
+    showToast("12b00 API Key copied to clipboard!", "success");
   }).catch(() => {
     showToast("API Key: " + input.value, "success");
   });
@@ -392,7 +392,7 @@ function copyProfileApiKey() {
 
 async function handleRegenerateKey() {
   if (!currentUser) return;
-  if (!confirm("Are you sure you want to generate a new SICK API Key?")) {
+  if (!confirm("Are you sure you want to generate a new 12b00 API Key?")) {
     return;
   }
   try {
@@ -402,7 +402,7 @@ async function handleRegenerateKey() {
       currentUser.api_key = data.api_key;
       const keyInput = document.getElementById("profileApiKeyInput");
       if (keyInput) keyInput.value = data.api_key;
-      showToast("New SICK API Key generated successfully!", "success");
+      showToast("New 12b00 API Key generated successfully!", "success");
     } else {
       showToast(data.message || "Failed to generate new key.", "error");
     }
@@ -621,16 +621,16 @@ function applyProfilePreset(presetKey) {
     showToast("Preset 'Gamer Squad' applied!", "success");
   } else if (presetKey === "vip") {
     nickInput.value = "👑 Server VIP";
-    bioTextarea.value = "✨ Certified SICK Booster • Elite Member • Boosting this server to Level 3!";
+    bioTextarea.value = "✨ Certified 12b00 Booster • Elite Member • Boosting this server to Level 3!";
     showToast("Preset 'VIP Member' applied!", "success");
   } else if (presetKey === "anime") {
     nickInput.value = "🌸 Senpai";
     bioTextarea.value = "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Just an otaku boosting awesome servers! 🍜";
     showToast("Preset 'Aesthetic Anime' applied!", "success");
   } else if (presetKey === "sick") {
-    nickInput.value = "⚡ SICK Booster";
-    bioTextarea.value = "🚀 Supercharged with SICK Marketplace • discord.gg/NitroHQ!";
-    showToast("Preset 'SICK Booster' applied!", "success");
+    nickInput.value = "⚡ 12b00 Booster";
+    bioTextarea.value = "🚀 Supercharged with 12b00 Marketplace • discord.gg/ZEXX!";
+    showToast("Preset '12b00 Booster' applied!", "success");
   } else if (presetKey === "clear") {
     nickInput.value = "";
     bioTextarea.value = "";
@@ -682,7 +682,7 @@ async function handlePlaceByotOrder() {
   btn.disabled = true;
   btn.innerHTML = `
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" class="spin-icon"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-    <span>Deploying Boosts via SICK Cloud Engine...</span>
+    <span>Deploying Boosts via 12b00 Cloud Engine...</span>
   `;
 
   try {
@@ -1120,7 +1120,7 @@ function escapeHtml(str) {
 }
 
 // ==========================================================================
-// 👑 SICK ADMIN CONTROL PANEL FUNCTIONS
+// 👑 12b00 ADMIN CONTROL PANEL FUNCTIONS
 // ==========================================================================
 
 function openAdminModal() {

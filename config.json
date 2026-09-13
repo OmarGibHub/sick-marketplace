@@ -28,9 +28,9 @@
     "default_mode": "stock"
   },
   "branding": {
-    "site_name": "SICK ⚡ Gaming & Nitro Marketplace",
+    "site_name": "12b00 ⚡ Gaming & Nitro Marketplace",
     "currency_symbol": "€",
-    "support_discord": "https://discord.gg/NitroHQ",
+    "support_discord": "https://discord.gg/ZEXX",
     "tagline": "Automated Discord Server Boosts & High-Speed Cloud Fulfillment"
   },
   "tunnel": {
@@ -42,8 +42,8 @@
   "maintenance": {
     "enabled": false,
     "admin_secret": "sick_admin_pass",
-    "message": "Wir führen aktuell geplante Upgrades am SICK Marketplace durch. Alle Bestellungen, Accounts und Guthaben sind absolut sicher!",
-    "discord_url": "https://discord.gg/NitroHQ"
+    "message": "Wir führen aktuell geplante Upgrades am 12b00 Marketplace durch. Alle Bestellungen, Accounts und Guthaben sind absolut sicher!",
+    "discord_url": "https://discord.gg/ZEXX"
   },
   "discord": {
     "webhook_url": "https://discord.com/api/webhooks/1547227892742750269/BYU67OPDjuRN_wLdNjbWIdxPXX8Q30fNa8V46izw51ojOjFl-FogPOLLEb0DCTPRTPA-"

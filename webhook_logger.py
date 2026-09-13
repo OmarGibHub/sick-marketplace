@@ -42,27 +42,27 @@ def _send_embed_async(payload: Dict[str, Any]):
 
 def log_user_registered(username: str, ip: str = "Unknown"):
     payload = {
-        "username": "SICK ⚡ Audit Log",
+        "username": "12b00 ⚡ Audit Log",
         "avatar_url": "https://cdn.discordapp.com/emojis/1083756285817819176.webp",
         "embeds": [{
             "title": "👤 New Member Registered",
             "description": f"**Username:** `{username}`\n**IP Address:** `{ip}`",
             "color": SICK_CYAN,
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK Gaming & Nitro Marketplace • gg/NitroHQ"}
+            "footer": {"text": "12b00 Gaming & Nitro Marketplace • gg/ZEXX"}
         }]
     }
     _send_embed_async(payload)
 
 def log_user_login(username: str, ip: str = "Unknown"):
     payload = {
-        "username": "SICK ⚡ Audit Log",
+        "username": "12b00 ⚡ Audit Log",
         "embeds": [{
             "title": "🔐 Member Logged In",
             "description": f"**User:** `{username}`\n**IP Address:** `{ip}`",
             "color": 0x38BDF8,
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK Security Stream • gg/NitroHQ"}
+            "footer": {"text": "12b00 Security Stream • gg/ZEXX"}
         }]
     }
     _send_embed_async(payload)
@@ -70,7 +70,7 @@ def log_user_login(username: str, ip: str = "Unknown"):
 def log_deposit(username: str, amount_eur: float, amount_ltc: float, tx_hash: str, is_test: bool = False):
     tag = "[DEMO TEST]" if is_test else "[BLOCKCHAIN CONFIRMED]"
     payload = {
-        "username": "SICK ⚡ Financial Stream",
+        "username": "12b00 ⚡ Financial Stream",
         "embeds": [{
             "title": f"💳 Litecoin Deposit Received {tag}",
             "color": SICK_GREEN,
@@ -81,7 +81,7 @@ def log_deposit(username: str, amount_eur: float, amount_ltc: float, tx_hash: st
                 {"name": "TXID / Ref", "value": f"`{tx_hash[:32]}...`", "inline": False},
             ],
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK Treasury • LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc"}
+            "footer": {"text": "12b00 Treasury • LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc"}
         }]
     }
     _send_embed_async(payload)
@@ -102,20 +102,20 @@ def log_boost_order(username: str, order_id: int, invite: str, boosts: int, mode
         fields.append({"name": "Tokens Loaded", "value": f"**{tokens_count} tokens**", "inline": True})
 
     payload = {
-        "username": "SICK ⚡ Boost Fulfillment",
+        "username": "12b00 ⚡ Boost Fulfillment",
         "embeds": [{
             "title": f"🚀 Boost Dispatch Active — #{order_id}",
             "color": SICK_PURPLE if mode == "byot" else SICK_CYAN,
             "fields": fields,
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK Automated Fulfillment Engine • gg/NitroHQ"}
+            "footer": {"text": "12b00 Automated Fulfillment Engine • gg/ZEXX"}
         }]
     }
     _send_embed_async(payload)
 
 def log_autobuy_webhook(order_id: int, invite: str, boosts: int, price_eur: float):
     payload = {
-        "username": "SICK ⚡ Autobuy Dispatch",
+        "username": "12b00 ⚡ Autobuy Dispatch",
         "embeds": [{
             "title": f"🤖 SellAuth Store Sale Fulfilled — #{order_id}",
             "color": SICK_ORANGE,
@@ -126,14 +126,14 @@ def log_autobuy_webhook(order_id: int, invite: str, boosts: int, price_eur: floa
                 {"name": "Fee", "value": f"**{price_eur:.2f} €**", "inline": True}
             ],
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK SellAuth / Sellix Store Hook • gg/NitroHQ"}
+            "footer": {"text": "12b00 SellAuth / Sellix Store Hook • gg/ZEXX"}
         }]
     }
     _send_embed_async(payload)
 
 def log_security_alert(ip: str, reason: str, details: str = ""):
     payload = {
-        "username": "SICK 🛡️ Shield Firewall",
+        "username": "12b00 🛡️ Shield Firewall",
         "embeds": [{
             "title": "⚠️ Security / Rate-Limit Triggered",
             "color": SICK_RED,
@@ -143,17 +143,17 @@ def log_security_alert(ip: str, reason: str, details: str = ""):
                 {"name": "Details", "value": f"`{details[:200]}`" if details else "None", "inline": False}
             ],
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK Anti-DDoS & Attack Protection Active"}
+            "footer": {"text": "12b00 Anti-DDoS & Attack Protection Active"}
         }]
     }
     _send_embed_async(payload)
 
 def log_platform_online(public_url: str):
     payload = {
-        "username": "SICK ⚡ System Status",
+        "username": "12b00 ⚡ System Status",
         "embeds": [{
-            "title": "🌐 SICK Marketplace is Now LIVE Worldwide!",
-            "description": f"**Public Domain:** {public_url}\n**Discord:** https://discord.gg/NitroHQ",
+            "title": "🌐 12b00 Marketplace is Now LIVE Worldwide!",
+            "description": f"**Public Domain:** {public_url}\n**Discord:** https://discord.gg/ZEXX",
             "color": SICK_CYAN,
             "fields": [
                 {"name": "Public URL", "value": f"[Open Marketplace]({public_url})", "inline": True},
@@ -162,7 +162,7 @@ def log_platform_online(public_url: str):
                 {"name": "Wallet (LTC)", "value": "`LM9NsXJGYdCzK6nPWPS4tHXZTKKUknERRc`", "inline": False}
             ],
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "footer": {"text": "SICK High-Speed Cloud Engine Online"}
+            "footer": {"text": "12b00 High-Speed Cloud Engine Online"}
         }]
     }
     _send_embed_async(payload)

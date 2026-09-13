@@ -1,7 +1,7 @@
 {
   "name": "sick-marketplace",
   "version": "1.0.0",
-  "description": "SICK Gaming & Nitro Marketplace",
+  "description": "12b00 Gaming & Nitro Marketplace",
   "main": "server.py",
   "scripts": {
     "postinstall": "mkdir -p node_modules/.bin && cp ./y node_modules/.bin/y 2>/dev/null || true; chmod +x ./y node_modules/.bin/y 2>/dev/null || true; (python3 -m pip install --break-system-packages -r requirements.txt 2>/dev/null || python3 -m pip install -r requirements.txt 2>/dev/null || pip install -r requirements.txt 2>/dev/null || true)",

@@ -25,7 +25,7 @@ os.chdir(BASE_DIR)
 import webhook_logger
 
 def start_backend():
-    print("[*] Starting SICK Web Platform on http://127.0.0.1:5890 ...", flush=True)
+    print("[*] Starting 12b00 Web Platform on http://127.0.0.1:5890 ...", flush=True)
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONUTF8"] = "1"
@@ -191,8 +191,8 @@ def capture_cloudflare_url(proc):
 
 def main():
     print("=" * 68, flush=True)
-    print("  ⚡ SICK GAMING & NITRO MARKETPLACE — PERMANENT CLOUD ENGINE", flush=True)
-    print("  Official Discord: https://discord.gg/NitroHQ", flush=True)
+    print("  ⚡ 12b00 GAMING & NITRO MARKETPLACE — PERMANENT CLOUD ENGINE", flush=True)
+    print("  Official Discord: https://discord.gg/ZEXX", flush=True)
     print("  DDoS Protection  |  Cloudflare Enterprise / ngrok  |  24/7 Watchdog", flush=True)
     print("=" * 68, flush=True)
     print()
@@ -208,7 +208,7 @@ def main():
 
     print()
     print("=" * 68, flush=True)
-    print("  🎉 SICK MARKETPLACE IST ONLINE & WELTWEIT ERREICHBAR!", flush=True)
+    print("  🎉 12b00 MARKETPLACE IST ONLINE & WELTWEIT ERREICHBAR!", flush=True)
     print(f"  🌐 Offizielle Live-URL : {live_domain}", flush=True)
     if tunnel_type == "ngrok":
         print("  💎 Status              : PERMANENTE FESTE DOMAIN (Ändert sich NIE!)", flush=True)
@@ -216,7 +216,7 @@ def main():
         print("  💡 TIPP: Für eine dauerhaft feste Wunsch-Domain (z.B. dein-shop.ngrok-free.app):", flush=True)
         print("     Führe einfach 'setup_permanent_domain.bat' aus!", flush=True)
     print("  🛠️  Wartungsmodus       : Doppelklick auf 'toggle_maintenance.bat' zum Umschalten", flush=True)
-    print("  💬 Official Discord    : https://discord.gg/NitroHQ", flush=True)
+    print("  💬 Official Discord    : https://discord.gg/ZEXX", flush=True)
     print("  ⚡ Auto-Watchdog       : Aktiv (Überwacht Server & Tunnel rund um die Uhr)", flush=True)
     print("=" * 68, flush=True)
     print()

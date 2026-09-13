@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo '=== SICK Marketplace Auto-Launcher y ==='
+echo '=== 12b00 Marketplace Auto-Launcher y ==='
 export PYTHONUNBUFFERED=1
 export PORT=${PORT:-5890}
 echo '[*] Checking Python dependencies...'

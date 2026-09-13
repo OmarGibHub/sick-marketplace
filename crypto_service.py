@@ -67,7 +67,7 @@ class CryptoService:
         ltc_amount = self.eur_to_ltc(amount_eur)
         
         # Standard BIP21 URI for crypto wallets and QR code scanning
-        uri = f"litecoin:{self.wallet_address}?amount={ltc_amount}&label=SICK%20Marketplace"
+        uri = f"litecoin:{self.wallet_address}?amount={ltc_amount}&label=12b00%20Marketplace"
         
         return {
             "wallet_address": self.wallet_address,

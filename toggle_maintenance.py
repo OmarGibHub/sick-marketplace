@@ -21,8 +21,8 @@ def toggle_maintenance():
         cfg["maintenance"] = {
             "enabled": False,
             "admin_secret": "sick_admin_pass",
-            "message": "Wir führen aktuell geplante Upgrades am SICK Marketplace durch.",
-            "discord_url": "https://discord.gg/NitroHQ"
+            "message": "Wir führen aktuell geplante Upgrades am 12b00 Marketplace durch.",
+            "discord_url": "https://discord.gg/ZEXX"
         }
 
     current_state = cfg["maintenance"].get("enabled", False)

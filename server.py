@@ -103,7 +103,7 @@ async def security_and_rate_limit_middleware(request: web.Request, handler):
     # Whitelist harmless polling, static assets & read endpoints
     if path in EXEMPT_PATHS or path.startswith("/static/"):
         response = await handler(request)
-        response.headers["Server"] = "SICK-Shield/3.0"
+        response.headers["Server"] = "12b00-Shield/3.0"
         return response
 
     # Rate Limiter (Anti-Brute Force & Anti-DDoS for sensitive action endpoints)
@@ -115,7 +115,7 @@ async def security_and_rate_limit_middleware(request: web.Request, handler):
                 webhook_logger.log_security_alert(ip, "Rate Limit Exceeded (Anti-DDoS Shield)", f"Path: {path}")
                 return web.json_response({
                     "success": False,
-                    "message": "Too many requests. SICK Shield security rate-limit triggered. Please wait a few seconds."
+                    "message": "Too many requests. 12b00 Shield security rate-limit triggered. Please wait a few seconds."
                 }, status=429)
 
     response = await handler(request)
@@ -124,7 +124,7 @@ async def security_and_rate_limit_middleware(request: web.Request, handler):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-XSS-Protection"] = "1; mode=block"
-    response.headers["Server"] = "SICK-Shield/3.0"
+    response.headers["Server"] = "12b00-Shield/3.0"
     return response
 
 class BoostPlatformServer:
@@ -1067,7 +1067,7 @@ class BoostPlatformServer:
         self.seed_historical_blockchain_transactions()
         self.sync_admin_balances()
         domain = os.environ.get("RENDER_EXTERNAL_URL", f"http://localhost:{port}")
-        print(f"[*] SICK ⚡ Gaming & Nitro Marketplace running on http://localhost:{port}...", flush=True)
+        print(f"[*] 12b00 ⚡ Gaming & Nitro Marketplace running on http://localhost:{port}...", flush=True)
         try:
             webhook_logger.log_platform_online(domain)
         except Exception as e:
